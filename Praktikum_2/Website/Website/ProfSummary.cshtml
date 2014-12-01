@@ -1,7 +1,7 @@
 ﻿@using System.Data.SqlClient
 @{  
     string nickname = Request.QueryString["prof"];
-    string sqlAddress = @"Data Source=JUERGEN-ALT\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=sa;Password=sa2008";
+    string sqlAddress = @"Data Source=TEST-PC\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=SA;Password=sa2014";
     string queryString = "SELECT Professoren.AkademischerTitel, Benutzer.Nachname " +
                       "FROM Benutzer " +
                       "INNER JOIN Professoren ON Professoren.Nickname = Benutzer.Nickname " +

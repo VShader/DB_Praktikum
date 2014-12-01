@@ -2,7 +2,7 @@
 @{
     string userName = Request.Form["userName"];
     string password = Request.Form["password"];
-    string sqlAddress = @"Data Source=JUERGEN-ALT\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=sa;Password=sa2008";
+    string sqlAddress = @"Data Source=TEST-PC\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=SA;Password=sa2014";
     string queryString = "SELECT Benutzer.Passwort " +
                       "FROM Benutzer WHERE Benutzer.Nickname = '" + userName + "'";
 

@@ -1,29 +1,35 @@
 ﻿@using System.Data.SqlClient
 @{  
-    string title ="Module";
-    string profName;
-    string sqlAddress = @"Data Source=JUERGEN-ALT\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=sa;Password=sa2008";
-    string queryString = "SELECT Module.FachNummer, Module.Bezeichnung, Professoren.AkademischerTitel, Benutzer.Nachname, Benutzer.Nickname "+
-                      "FROM Module "+
-                      "INNER JOIN Professoren ON Professoren.Nickname = Module.Verantwortlicher "+
-                      "INNER JOIN Benutzer ON Module.Verantwortlicher = Benutzer.Nickname "+
-                      "ORDER BY Module.FachNummer ";
+        string title ="Module";
+    //try
+    //{ 
+        string profName;
+        string sqlAddress = @"Data Source=TEST-PC\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=SA;Password=sa2014";
+        string queryString = "SELECT Module.FachNummer, Module.Bezeichnung, Professoren.AkademischerTitel, Benutzer.Nachname, Benutzer.Nickname "+
+                            "FROM Module "+
+                            "INNER JOIN Professoren ON Professoren.Nickname = Module.Verantwortlicher "+
+                            "INNER JOIN Benutzer ON Module.Verantwortlicher = Benutzer.Nickname "+
+                            "ORDER BY Module.FachNummer ";
                       
-    Layout = "~/layout/Layout.cshtml";
+        Layout = "~/layout/Layout.cshtml";
 
-    if (Request.QueryString["logout"] == "true")
+        if (Request.QueryString["logout"] == "true")
+        {
+            Session.Abandon();
+            Response.Redirect("~/Login.cshtml");
+        }
+    
+        SqlConnection connection = new SqlConnection(sqlAddress);
+        SqlCommand query = new SqlCommand(queryString, connection);
+        connection.Open();
+        SqlDataReader reader = query.ExecuteReader();
+    @*}   catch(SqlException e)
     {
-        Session.Abandon();
-        Response.Redirect("~/Login.cshtml");
-    }
-    
-    SqlConnection connection = new SqlConnection(sqlAddress);
-    SqlCommand query = new SqlCommand(queryString, connection);
-    connection.Open();
-    SqlDataReader reader = query.ExecuteReader();
+        <p>@e.ToString()</p>
+    }*@
     
     
-    }
+}
 
 @section title {
     <title>@title</title>
