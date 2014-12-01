@@ -1,0 +1,38 @@
+﻿@using System.Data.SqlClient
+@{  
+    string queryString = "SELECT Module.Bezeichnung " +
+                      "FROM Module " +
+                      "WHERE Module.Verantwortlicher = '" + PageData[1] + "' " +
+                      "ORDER BY Module.ID ";
+    int docCount = 0;
+
+    SqlConnection connection = new SqlConnection(PageData[0]);
+    SqlCommand query = new SqlCommand(queryString, connection);
+    connection.Open();
+    SqlDataReader reader = query.ExecuteReader();
+}   
+ 
+    <h2>Verantwortlich für folgende Module</h2>
+    <ul>
+@for (; reader.Read(); ++docCount)
+{
+    <li>
+        <p>@reader["Bezeichnung"]</p>
+    </li>
+}
+    </ul>
+@{
+    connection.Close();  
+    if(docCount == 0)
+    {
+        <p>No modules!!!</p>
+    }
+    else if(docCount == 1)
+    {
+        <p>1 Modul</p>
+    }
+    else
+    {
+        <p>@docCount Module</p>
+    }
+}
