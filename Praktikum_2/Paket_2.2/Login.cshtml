@@ -1,0 +1,51 @@
+﻿@using System.Data.SqlClient
+@{
+    string userName = Request.Form["userName"];
+    string password = Request.Form["password"];
+    string sqlAddress = @"Data Source=JUERGEN-ALT\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=sa;Password=sa2008";
+    string queryString = "SELECT Benutzer.Passwort " +
+                      "FROM Benutzer WHERE Benutzer.Nickname = '" + userName + "'";
+
+    Layout = "~/layout/LayoutLogin.cshtml";
+
+    
+    
+    if(!userName.IsEmpty())
+    {
+        string dbPassword = " ";
+        SqlConnection connection = new SqlConnection(sqlAddress);
+        SqlCommand query = new SqlCommand(queryString, connection);
+        connection.Open();
+        try
+        { dbPassword = (string)query.ExecuteScalar(); }
+        catch(Exception excep)
+        {
+            <p>@excep</p>
+        }
+        connection.Close();
+        if(dbPassword.IsEmpty())
+        { 
+            <p>User doesn't exsist!!!</p>
+            userName = "";
+        }
+        else if(string.Compare(Crypto.Hash(password, "md5").ToString(), dbPassword,true)!=0)
+        {
+            <p>Wrong Password!!!</p>
+        } 
+        else
+        {
+            Session["authenticated"] = "ok";
+            Response.Redirect("~/Default.cshtml");
+        }
+        
+    }
+}
+
+
+    <form action="~/login" method="post">
+        <lable for="userName">User Name</lable>
+        <input type="text" name="userName" value="@userName"/><br/>
+        <lable for="password">Password</lable>
+        <input type="password" name="password"/><br/>
+        <input type="submit" value="login"></input>
+    </form>

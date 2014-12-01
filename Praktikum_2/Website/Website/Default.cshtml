@@ -1,0 +1,29 @@
+﻿@{ string title = "Studentenportal FH-Aachen";
+ Layout = "~/layout/LayoutDefault.cshtml";
+}
+
+<p>Was kann ich als n&auml;chstes tun...?</p>
+<ul>
+    <li><a href="~/Module.cshtml">Aktuelle Module</a></li>
+    <li>
+        Benutzer
+        <ul>
+            <li>Professoren</li>
+            <li>Studenten</li>
+        </ul>
+    </li>
+    <li>Dokumente</li>
+    <li>Forum</li>
+</ul>
+
+
+@section message
+            {
+    <form action="http://www.strauch.fh-aachen.de/db/post-test.php" method="post" target="_blank">
+        <fieldset>
+            <legend>Neue Eil-Meldung erstellen</legend>
+            <textarea name="meldung" rows="10" cols="50"></textarea><br />
+            <input type="submit" name="submit" value="Nachricht erstellen" />
+        </fieldset>
+    </form>
+}

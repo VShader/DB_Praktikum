@@ -1,0 +1,63 @@
+﻿@using System.Data.SqlClient
+@{  
+    string title ="Module";
+    string profName;
+    string sqlAddress = @"Data Source=JUERGEN-ALT\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=sa;Password=sa2008";
+    string queryString = "SELECT Module.FachNummer, Module.Bezeichnung, Professoren.AkademischerTitel, Benutzer.Nachname, Benutzer.Nickname "+
+                      "FROM Module "+
+                      "INNER JOIN Professoren ON Professoren.Nickname = Module.Verantwortlicher "+
+                      "INNER JOIN Benutzer ON Module.Verantwortlicher = Benutzer.Nickname "+
+                      "ORDER BY Module.FachNummer ";
+                      
+    Layout = "~/layout/Layout.cshtml";
+
+    if (Request.QueryString["logout"] == "true")
+    {
+        Session.Abandon();
+        Response.Redirect("~/Login.cshtml");
+    }
+    
+    SqlConnection connection = new SqlConnection(sqlAddress);
+    SqlCommand query = new SqlCommand(queryString, connection);
+    connection.Open();
+    SqlDataReader reader = query.ExecuteReader();
+    
+    
+    }
+
+@section title {
+    <title>@title</title>
+}
+
+@section subpage {
+     <a href="Default.cshtml" target="_self">zurück</a>
+}
+
+
+<h1>@title</h1>
+
+<table border=1 width="100%">
+	<tr>
+		<th>Fach No.</th>
+		<th>Bezeichnung</th>
+		<th>Verantwortlicher</th>
+	</tr>
+    @while(reader.Read())
+    {
+    <tr>
+		<td>@reader["FachNummer"]</td>
+		<td>@reader["Bezeichnung"]</td>
+		<td>
+        @{
+            profName = reader["AkademischerTitel"].ToString() + " ";
+            profName += @reader["Nachname"].ToString();
+            <a href="~/ProfSummary.cshtml?prof=@reader["Nickname"]">@profName</a>
+        }
+		</td>
+	</tr>
+    }
+</table>
+
+@{
+    connection.Close();
+}

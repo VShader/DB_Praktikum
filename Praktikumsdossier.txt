@@ -1,0 +1,9 @@
+Praktikum_1
+	1.1_Aufgabe_4:	Ein Post ist nicht Idempotent und darf (sollte) daher nur einmal ausgeführt werden. 
+	1.2_Aufgabe_1:	Ein char array mit 16 Einträgen kann einen 128 bit Wert speichern.
+					MD5 gillt nicht mehr als sicher, da man mit überschaubarem Aufwand den selben Wert mit einer anderen Eingabe erzeugen kann.
+	1.2_Aufgabe_2:	1:1 Alles in eine Tabelle; 1:N Die Tabelle die die N Elemente hat, hat einen Foreign Key auf die Tabelle die die 1 repräsentiert;
+					N:M Beide Tabellen haben Foreign Keys die auf die Primary Keys der jeweiligen anderen Zeigen.
+					Der Primary Key eines Subtypen ist der selbe der Obertypen.
+	1.2_Aufgabe_6:	Indizes werden verwendet und Daten schneller zu suchen oder sortieren.
+					Bei clusterd Index versucht das DBMS neu eingefügte daten nahe den Daten zu speichern die auch in der Indextabelle nah beieinander liegen.
