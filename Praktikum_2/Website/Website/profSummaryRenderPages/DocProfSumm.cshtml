@@ -1,16 +1,15 @@
 ﻿@using System.Data.SqlClient
+@using Website
 @{  
     string queryString = "SELECT Dokumente.Titel, Dokumente.Bereitstellungsdatum " +
                       "FROM Dokumente " +
-                      "WHERE Dokumente.Benutzer = '" + PageData[1] + "' " +
+                      "WHERE Dokumente.Benutzer = '" + PageData[0] + "' " +
                       "ORDER BY Dokumente.Bereitstellungsdatum ";
     int docCount = 0;
     DateTime time;
 
-    SqlConnection connection = new SqlConnection(PageData[0]);
-    SqlCommand query = new SqlCommand(queryString, connection);
-    connection.Open();
-    SqlDataReader reader = query.ExecuteReader();
+    var entry = new SqlEntry();
+    var reader = entry.getReader(queryString);
 }   
  
     <h2>Bereitgestellte Dokumente</h2>
@@ -24,7 +23,6 @@
 }
     </ul>
 @{
-    connection.Close();  
     if(docCount == 0)
     {
         <p>No documents!!!</p>

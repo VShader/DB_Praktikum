@@ -1,4 +1,5 @@
 ﻿@using System.Data.SqlClient
+@using Website
 @{  
     string queryString = "SELECT Foren.ID, Foren.Bezeichnung, Beiträge.Mitteilung, Beiträge.Änderungsdatum " +
                       "FROM Foren " +
@@ -6,17 +7,15 @@
                       "ON Foren.ID = Diskussionen.ForumID " +
                       "INNER JOIN Beiträge " +
                       "ON Diskussionen.ID = Beiträge.DiskussionsID " +
-                      "WHERE Beiträge.Benutzer = '" + PageData[1] + "' " +
+                      "WHERE Beiträge.Benutzer = '" + PageData[0] + "' " +
                       "ORDER BY Foren.ID, Beiträge.Änderungsdatum DESC ";
     int forumCount = 0;
     int postCount = 0;
     string post;
     DateTime time;
 
-    SqlConnection connection = new SqlConnection(PageData[0]);
-    SqlCommand query = new SqlCommand(queryString, connection);
-    connection.Open();
-    SqlDataReader reader = query.ExecuteReader();
+    var entry = new SqlEntry();
+    var reader = entry.getReader(queryString);
 }
 
 <h2>Forum Beiträge</h2>
@@ -36,7 +35,6 @@
     
 }
 @{
-    connection.Close();  
     if(forumCount == 0)
     {
         <p>No entries!!!</p>

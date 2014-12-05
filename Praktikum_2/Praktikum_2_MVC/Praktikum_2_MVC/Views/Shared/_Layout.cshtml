@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div id="title">
+                <h1>CampusOffice reloaded</h1>
+            </div>            
+            <div id="logindisplay">{Login/Logout}</div>
+            <nav>
+                <ul id="menu">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Module", "Index", "Module")</li>
+                    <li>@Html.ActionLink("Benutzer", "Index", "Benutzer")</li>
+                </ul>
+            </nav>
+            
+        </header>
+		
+        <section id="main">
+            @RenderBody()
+        </section>
+		
+        <footer>
+			(c) none, go to town!
+        </footer>
+    </div>
+</body>
+</html>

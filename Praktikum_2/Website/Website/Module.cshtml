@@ -1,10 +1,10 @@
 ﻿@using System.Data.SqlClient
+@using Website
 @{  
         string title ="Module";
     //try
     //{ 
         string profName;
-        string sqlAddress = @"Data Source=TEST-PC\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=SA;Password=sa2014";
         string queryString = "SELECT Module.FachNummer, Module.Bezeichnung, Professoren.AkademischerTitel, Benutzer.Nachname, Benutzer.Nickname "+
                             "FROM Module "+
                             "INNER JOIN Professoren ON Professoren.Nickname = Module.Verantwortlicher "+
@@ -19,10 +19,9 @@
             Response.Redirect("~/Login.cshtml");
         }
     
-        SqlConnection connection = new SqlConnection(sqlAddress);
-        SqlCommand query = new SqlCommand(queryString, connection);
-        connection.Open();
-        SqlDataReader reader = query.ExecuteReader();
+        
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);
     @*}   catch(SqlException e)
     {
         <p>@e.ToString()</p>
@@ -63,7 +62,3 @@
 	</tr>
     }
 </table>
-
-@{
-    connection.Close();
-}
