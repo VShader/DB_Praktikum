@@ -14,14 +14,15 @@
     string post;
     DateTime time;
 
-    var entry = new SqlEntry();
-    var reader = entry.getReader(queryString);
-}
+    try
+    { 
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);
 
 <h2>Forum Beiträge</h2>
 
-@for(; reader.Read(); ++forumCount)
-{
+        for(; reader.Read(); ++forumCount)
+        {
     <h3>@reader["Bezeichnung"]</h3>
     <ul>
         @for (; reader.Read(); ++postCount)
@@ -33,18 +34,21 @@
         }
     </ul>
     
-}
-@{
-    if(forumCount == 0)
+        }
+        if(forumCount == 0)
+        {
+            <p>No entries!!!</p>
+        }
+        else if(forumCount == 1)
+        {
+            <p>@postCount Beiträge in 1 Forum</p>
+        }
+        else
+        {
+            <p>@postCount Beiträge in @forumCount Foren</p>
+        }
+    }   catch(SqlException e)
     {
-        <p>No entries!!!</p>
-    }
-    else if(forumCount == 1)
-    {
-        <p>@postCount Beiträge in 1 Forum</p>
-    }
-    else
-    {
-        <p>@postCount Beiträge in @forumCount Foren</p>
+        <p>Anmelden zur Zeit nicht möglich bitte versuchen Sie es sp&aumlter wieder.</p>
     }
 }

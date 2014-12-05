@@ -7,30 +7,37 @@
                       "ORDER BY Module.ID ";
     int docCount = 0;
 
-    var entry = new SqlEntry();
-    var reader = entry.getReader(queryString);
-}   
+    try
+    { 
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);
+   
  
     <h2>Verantwortlich für folgende Module</h2>
     <ul>
-@for (; reader.Read(); ++docCount)
-{
+        @{
+            for (; reader.Read(); ++docCount)
+            {
     <li>
         <p>@reader["Bezeichnung"]</p>
     </li>
-}
+            }
+        }
     </ul>
-@{
-    if(docCount == 0)
+        if(docCount == 0)
+        {
+            <p>No modules!!!</p>
+        }
+        else if(docCount == 1)
+        {
+            <p>1 Modul</p>
+        }
+        else
+        {
+            <p>@docCount Module</p>
+        }
+    }   catch(SqlException e)
     {
-        <p>No modules!!!</p>
-    }
-    else if(docCount == 1)
-    {
-        <p>1 Modul</p>
-    }
-    else
-    {
-        <p>@docCount Module</p>
+        <p>Anmelden zur Zeit nicht möglich bitte versuchen Sie es sp&aumlter wieder.</p>
     }
 }

@@ -10,14 +10,18 @@
     
     Layout = "~/layout/Layout.cshtml";
 
-    var entry = new SqlEntry();
-    var reader = entry.getReader(queryString);
-    try {
+    
+    try 
+    {
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);
         reader.Read();
         title = reader["AkademischerTitel"] + " " + reader["Nachname"];
-        }
-    catch(Exception excep) { <p>@excep</p> }
+    }   catch(SqlException e) 
+    { 
+        <p>Auf Daten kann nicht zugegriffen werden, bitte versuchen Sie es sp&aumlter wieder.</p> 
     }
+}
 
 @section title {
     <title>@title</title>

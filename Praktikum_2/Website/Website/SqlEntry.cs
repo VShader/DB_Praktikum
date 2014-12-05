@@ -10,18 +10,30 @@ namespace Website
     {
         public SqlDataReader getReader(String query)
         {
-            connection = new SqlConnection(sqlAddress);
-            var command = new SqlCommand(query, connection);
-            connection.Open();
-            return command.ExecuteReader();
+            try
+            {
+                connection = new SqlConnection(sqlAddress);
+                var command = new SqlCommand(query, connection);
+                connection.Open();
+                return command.ExecuteReader();
+            }   catch(SqlException e)
+            {
+                throw;
+            }
         }
 
         public Object getScalar(String query)
         {
-            connection = new SqlConnection(sqlAddress);
-            var command = new SqlCommand(query, connection);
-            connection.Open();
-            return command.ExecuteScalar();
+            try
+            {
+                connection = new SqlConnection(sqlAddress);
+                var command = new SqlCommand(query, connection);
+                connection.Open();
+                return command.ExecuteScalar();
+            }   catch(SqlException e)
+            {
+                throw;
+            }
         }
         public void Close()
         {

@@ -1,34 +1,8 @@
 ﻿@using System.Data.SqlClient
 @using Website
-@{  
-        string title ="Module";
-    //try
-    //{ 
-        string profName;
-        string queryString = "SELECT Module.FachNummer, Module.Bezeichnung, Professoren.AkademischerTitel, Benutzer.Nachname, Benutzer.Nickname "+
-                            "FROM Module "+
-                            "INNER JOIN Professoren ON Professoren.Nickname = Module.Verantwortlicher "+
-                            "INNER JOIN Benutzer ON Module.Verantwortlicher = Benutzer.Nickname "+
-                            "ORDER BY Module.FachNummer ";
-                      
-        Layout = "~/layout/Layout.cshtml";
 
-        if (Request.QueryString["logout"] == "true")
-        {
-            Session.Abandon();
-            Response.Redirect("~/Login.cshtml");
-        }
-    
-        
-        var entry = new SqlEntry();
-        var reader = entry.getReader(queryString);
-    @*}   catch(SqlException e)
-    {
-        <p>@e.ToString()</p>
-    }*@
-    
-    
-}
+
+@{string title = "Module";}
 
 @section title {
     <title>@title</title>
@@ -38,9 +12,29 @@
      <a href="Default.cshtml" target="_self">zurück</a>
 }
 
-
 <h1>@title</h1>
 
+@{          
+    string profName;
+    string queryString = "SELECT Module.FachNummer, Module.Bezeichnung, Professoren.AkademischerTitel, Benutzer.Nachname, Benutzer.Nickname "+
+                        "FROM Module "+
+                        "INNER JOIN Professoren ON Professoren.Nickname = Module.Verantwortlicher "+
+                        "INNER JOIN Benutzer ON Module.Verantwortlicher = Benutzer.Nickname "+
+                        "ORDER BY Module.FachNummer ";
+                      
+    Layout = "~/layout/Layout.cshtml";
+
+    if (Request.QueryString["logout"] == "true")
+    {
+        Session.Abandon();
+        Response.Redirect("~/Login.cshtml");
+    }
+
+    try 
+    { 
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);
+        
 <table border=1 width="100%">
 	<tr>
 		<th>Fach No.</th>
@@ -62,3 +56,9 @@
 	</tr>
     }
 </table>
+        
+    }   catch(SqlException e)
+    {
+        <p>Auf Daten kann nicht zugegriffen werden, bitte versuchen Sie es sp&aumlter wieder.</p>
+    }    
+}

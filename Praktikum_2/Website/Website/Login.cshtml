@@ -31,7 +31,7 @@
             Session["authenticated"] = "ok";
             Response.Redirect("~/Default.cshtml");
         }
-        }   catch(Exception e)
+        }   catch(SqlException e)
         {
             <p>Anmelden zur Zeit nicht möglich bitte versuchen Sie es sp&aumlter wieder.</p>
         }
