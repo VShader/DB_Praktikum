@@ -9,6 +9,8 @@ namespace Praktikum_2_MVC.Models
 {
     public class Modul
     {
+        public Modul()
+        { }
         public Modul(int subNum, string description, string guarantor, string profName)
         {
             this.subNum = subNum;
@@ -20,7 +22,28 @@ namespace Praktikum_2_MVC.Models
         public string description { get; set; }
         public string guarantor { get; set; }
         public string profName { get; set; }
-        
+
+
+        internal static List<Modul> getModulByUser(string nickname)
+        {
+            var result = new List<Modul>();
+            var entry = new SqlEntry();
+
+            var reader = entry.getReader(query + nickname + query2);
+
+            while (reader.Read())
+            {
+                var modul = new Modul
+                {
+                    description = reader["Bezeichnung"].ToString()
+                };
+                result.Add(modul);
+            }
+            return result;
+        }
+        private static string query = "SELECT Module.Bezeichnung FROM Module " +
+                      "WHERE Module.Verantwortlicher = '";
+        private static string query2 = "' ORDER BY Module.ID ";
     }
 
     public class ModuleDB

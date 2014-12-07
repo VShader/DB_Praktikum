@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Praktikum_2_MVC.Models;
 
 namespace Praktikum_2_MVC.Controllers
 {
@@ -24,9 +25,10 @@ namespace Praktikum_2_MVC.Controllers
             return View(module);
         }
 
-        public ActionResult ProfSummary()
+        public ActionResult ProfSummary(string prof)
         {
-            return View();
+            var summ = Praktikum_2_MVC.Models.ProfSummary.Load(prof);
+            return View(summ);
         }
 	}
 }

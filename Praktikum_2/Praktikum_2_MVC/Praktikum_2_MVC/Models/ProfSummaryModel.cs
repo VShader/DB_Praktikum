@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using Website;
 
-namespace Forum.Models
+namespace Praktikum_2_MVC.Models
 {
     public class ProfSummary
     {
@@ -18,17 +19,52 @@ namespace Forum.Models
             var result = new ProfSummary
                              {
                                  Nickname = nickname,
+                                 Beiträge = ForumBeitrag.getBeitragByUser(nickname),
                                  Dokumente = Dokument.getDokumentByUser(nickname),
+                                 Module = Modul.getModulByUser(nickname)
                                  //...
                              };
             
             return result;
         }
+        string queryString = "SELECT Professoren.AkademischerTitel, Benutzer.Nachname " +
+                      "FROM Benutzer " +
+                      "INNER JOIN Professoren ON Professoren.Nickname = Benutzer.Nickname " +
+                      "WHERE Benutzer.Nickname = '";
     }
 
     public class ForumBeitrag
     {
-        
+        public string description { get; set; }
+        public string message { get; set; }
+        public DateTime changedAt { get; set; }
+        public static List<ForumBeitrag> getBeitragByUser(string nickname)
+        {
+            var result = new List<ForumBeitrag>();
+            var entry = new SqlEntry();
+
+            var reader = entry.getReader(query + nickname + query2);
+
+            while (reader.Read())
+            {
+                var forumBeitrag = new ForumBeitrag
+                {
+                    description = reader["Bezeichnung"].ToString(),
+                    message = reader["Mitteilung"].ToString(),
+                    changedAt = (DateTime)reader["Änderungsdatum"]
+                };
+                result.Add(forumBeitrag);
+            }
+            return result;
+        }
+        private static string query = "SELECT Foren.ID, Foren.Bezeichnung, Beiträge.Mitteilung, Beiträge.Änderungsdatum " +
+                      "FROM Foren " +
+                      "INNER JOIN Diskussionen " +
+                      "ON Foren.ID = Diskussionen.ForumID " +
+                      "INNER JOIN Beiträge " +
+                      "ON Diskussionen.ID = Beiträge.DiskussionsID " +
+                      "WHERE Beiträge.Benutzer = '";
+        private static string query2 = "' ORDER BY Foren.ID, Beiträge.Änderungsdatum DESC ";
     }
 
     public class Dokument
@@ -38,26 +74,10 @@ namespace Forum.Models
 
         public static List<Dokument> getDokumentByUser(string nickname)
         {
-
             var result = new List<Dokument>();
+            var entry = new SqlEntry();
 
-            var connectionString =
-                @"-- put Connection String here --";
-            var connection = new SqlConnection(connectionString);
-
-            connection.Open();
-
-
-            var query =
-                "SELECT d.Titel, d.Bereitstellungsdatum, p.Nickname FROM Dokumente d JOIN Benutzer b ON d.Benutzer = b.Nickname JOIN Professoren p ON b.Nickname = p.Nickname WHERE p.Nickname = @nickname";
-
-            var command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@nickname", nickname);
-
-            var reader = command.ExecuteReader();
-
-           
+            var reader = entry.getReader(query + nickname + "'");
 
             while (reader.Read())
             {
@@ -70,11 +90,8 @@ namespace Forum.Models
             }
             return result;
         }
-    }
-
-    public class Modul
-    {
-        
+        private static string query = "SELECT d.Titel, d.Bereitstellungsdatum, p.Nickname FROM Dokumente d "+
+            "JOIN Benutzer b ON d.Benutzer = b.Nickname JOIN Professoren p ON b.Nickname = p.Nickname WHERE p.Nickname ='";
     }
 
 }
