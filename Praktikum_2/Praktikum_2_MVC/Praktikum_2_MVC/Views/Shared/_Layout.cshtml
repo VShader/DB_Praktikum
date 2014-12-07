@@ -11,7 +11,18 @@
             <div id="title">
                 <h1>CampusOffice reloaded</h1>
             </div>            
-            <div id="logindisplay">{Login/Logout}</div>
+            <div id="logindisplay">
+                @{
+                    if (Session["authenticated"] == null)
+                    {
+                        <a href="~/Home/Login">Login</a>
+                    }
+                    else
+                    {
+                        <a href="~/Home/Login?logout=true">Logout</a>
+                    }
+}
+            </div>
             <nav>
                 <ul id="menu">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>

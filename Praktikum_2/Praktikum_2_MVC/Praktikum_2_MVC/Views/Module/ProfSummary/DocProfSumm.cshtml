@@ -1,0 +1,44 @@
+﻿@using System.Data.SqlClient
+@using Website
+@{  
+    string queryString = "SELECT Dokumente.Titel, Dokumente.Bereitstellungsdatum " +
+                      "FROM Dokumente " +
+                      "WHERE Dokumente.Benutzer = '" + PageData[0] + "' " +
+                      "ORDER BY Dokumente.Bereitstellungsdatum ";
+    int docCount = 0;
+
+    try 
+    {     
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);   
+ 
+    <h2>Bereitgestellte Dokumente</h2>
+    <ul>
+        @{
+            for (; reader.Read(); ++docCount)
+            {
+            var time = Convert.ToDateTime( reader["Bereitstellungsdatum"].ToString());
+    <li>
+        <p>@reader["Titel"] vor @DateTime.Now.Subtract(time).Days Tagen</p>
+    </li>
+            }
+        }
+    </ul>
+
+        if(docCount == 0)
+        {
+            <p>No documents!!!</p>
+        }
+        else if(docCount == 1)
+        {
+            <p>1 Dokument</p>
+        }
+        else
+        {
+            <p>@docCount Dokumente</p>
+        }
+    }   catch(SqlException e)
+    {
+        <p>Anmelden zur Zeit nicht möglich bitte versuchen Sie es sp&aumlter wieder.</p>
+    }
+}

@@ -1,0 +1,22 @@
+﻿@using System.Data.SqlClient
+@using Praktikum_2_MVC.Models
+@{
+    ViewBag.Title = "Studentenportal FH-Aachen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["authenticated"] != null)
+    {
+        Response.Redirect("~/Home");
+    }
+    
+    var user = new Benutzer(Request.Form["nickname"], Request.Form["password"]);
+}
+
+
+    <form action="~/Home/Login" method="post">
+        <lable for="userName">User Name</lable>
+        <input type="text" name="nickname" value="@user.nickname"/><br/>
+        <lable for="password">Password</lable>
+        <input type="password" name="password"/><br/>
+        <input type="submit" value="login"></input>
+    </form>

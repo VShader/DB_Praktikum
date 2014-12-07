@@ -1,0 +1,34 @@
+﻿@using System.Data.SqlClient
+@using Website
+@{
+    string nickname = Request.QueryString["prof"];
+    string queryString = "SELECT Professoren.AkademischerTitel, Benutzer.Nachname " +
+                      "FROM Benutzer " +
+                      "INNER JOIN Professoren ON Professoren.Nickname = Benutzer.Nickname " +
+                      "WHERE Benutzer.Nickname = '" + nickname + "'";
+    
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+
+    string title;
+    try 
+    {
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);
+        reader.Read();
+        title = reader["AkademischerTitel"] + " " + reader["Nachname"];
+    }   catch(SqlException e) 
+    { 
+        <p>Auf Daten kann nicht zugegriffen werden, bitte versuchen Sie es sp&aumlter wieder.</p> 
+        title = "Error";
+    }
+    ViewBag.Title = title;  
+}
+
+
+     <a href="~/Module" target="_self">zurück</a>
+
+<h1>@title</h1>
+
+@*@RenderPage("~/Module/profSummaryRenderPages/ForumProfSumm", nickname)
+@RenderPage("~/Module/profSummaryRenderPages/DocProfSumm", nickname)
+@RenderPage("~/Module/profSummaryRenderPages/ResponsProfSumm", nickname)*@

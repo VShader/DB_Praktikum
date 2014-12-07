@@ -1,0 +1,43 @@
+﻿@using System.Data.SqlClient
+@using Website
+@{  
+    string queryString = "SELECT Module.Bezeichnung " +
+                      "FROM Module " +
+                      "WHERE Module.Verantwortlicher = '" + PageData[0] + "' " +
+                      "ORDER BY Module.ID ";
+    int docCount = 0;
+
+    try
+    { 
+        var entry = new SqlEntry();
+        var reader = entry.getReader(queryString);
+   
+ 
+    <h2>Verantwortlich für folgende Module</h2>
+    <ul>
+        @{
+            for (; reader.Read(); ++docCount)
+            {
+    <li>
+        <p>@reader["Bezeichnung"]</p>
+    </li>
+            }
+        }
+    </ul>
+        if(docCount == 0)
+        {
+            <p>No modules!!!</p>
+        }
+        else if(docCount == 1)
+        {
+            <p>1 Modul</p>
+        }
+        else
+        {
+            <p>@docCount Module</p>
+        }
+    }   catch(SqlException e)
+    {
+        <p>Anmelden zur Zeit nicht möglich bitte versuchen Sie es sp&aumlter wieder.</p>
+    }
+}

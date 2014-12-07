@@ -1,0 +1,28 @@
+﻿@using Praktikum_2_MVC.Models
+@{
+    ViewBag.Title = "Erstellen";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    var user = new Benutzer( Request.Form["nickname"], Request.Form["vorname"], Request.Form["nachname"], 
+                    Request.Form["password"], Request.Form["email"]);
+}
+
+<h2>Erstellen</h2>
+
+<form action="~/Benutzer/Erstellen" method="post">
+    <lable for="nickname">User Name</lable>
+    <input type="text" name="nickname" value="@user.nickname"/><br />
+    <lable for="vorname">Vorname</lable>
+    <input type="text" name="vorname" value="@user.vorname" /><br />
+    <lable for="nachname">Nachname</lable>
+    <input type="text" name="nachname" value="@user.nachname"/><br />
+    
+    <lable for="email">E-Mail</lable>
+    <input type="text" name="email" value="@user.email"/><br />
+
+    <lable for="password1">Passwort</lable>
+    <input type="password" name="password" value="@user.password"/><br />
+    <lable for="repeatPw">Wiederholen</lable>
+    <input type="password" name="repeatPw" /><br />
+
+    <input type="submit" value="Erstellen"></input>
+</form>
