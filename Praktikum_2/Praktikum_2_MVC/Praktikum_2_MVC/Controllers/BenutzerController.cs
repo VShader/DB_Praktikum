@@ -27,11 +27,33 @@ namespace Praktikum_2_MVC.Controllers
         [HttpPost]
         public ActionResult Erstellen(Student user, string repeatPw)
         {
-            if(user.nickname.Length != 0 && user.email.Length != 0 &&  user.password.Equals(repeatPw) && user.einschreibeDatum.Year >= 1900)
+            var errorList = new List<string>();
+            if(string.IsNullOrEmpty(user.nickname))
+            {
+                errorList.Add("Benutzername benötigt");
+            }
+            if(string.IsNullOrEmpty(user.email))
+            {
+                errorList.Add("E-Mail benötigt");
+            }
+            if(string.IsNullOrEmpty(user.password) || string.IsNullOrEmpty(repeatPw) || !user.password.Equals(repeatPw))
+            {
+                errorList.Add("Passwort passt nicht zur Wiederholung");
+            }
+            if(user.einschreibeDatum.Year < 1900)
+            {
+                errorList.Add("Muss vor 1900 eingeschrieben sein");
+            }
+
+            if (errorList.Count == 0)
             {
                 user.password = Crypto.Hash(user.password, "md5");
+                user.createInDB();
+                ViewBag.Created = true;
+            }   else
+            {
+                ViewBag.ErrorList = errorList;
             }
-            user.createInDB();
             return View(user);
         }
 	}

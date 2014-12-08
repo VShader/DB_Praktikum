@@ -33,8 +33,12 @@ namespace Praktikum_2_MVC.Models
 
         public void createInDB()
         {
-            var entry = new SqlEntry();
-            entry.insertInto(queryString + nickname + "', '" + vorname + "', '" + nachname + "', '" + password + "', '" + email + "')");
+            try
+            {
+                var entry = new SqlEntry();
+                entry.insertInto(queryString + nickname + "', '" + vorname + "', '" + nachname + "', '" + password + "', '" + email + "')");
+            }   catch(SqlException e)
+            { throw; }
         }
         private string queryString = "INSERT INTO Benutzer(Nickname, Vorname, Nachname, Passwort, Email) VALUES('";
     }
@@ -55,9 +59,13 @@ namespace Praktikum_2_MVC.Models
 
         public void createInDB()
         {
-            base.createInDB();
-            var entry = new SqlEntry();
-            entry.insertInto(queryString + nickname + "', '" + matrikelnumber + "', '" + einschreibeDatum + "')");
+            try
+            {
+                base.createInDB();
+                var entry = new SqlEntry();
+                entry.insertInto(queryString + nickname + "', '" + matrikelnumber + "', '" + einschreibeDatum + "')");
+            }   catch(SqlException e)
+            { }
         }
         private string queryString = "INSERT INTO Studenten(Nickname, Matrikel, EinschreibeDatum) VALUES('";
     }

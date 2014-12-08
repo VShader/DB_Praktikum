@@ -7,6 +7,20 @@
 
 <h2>Erstellen</h2>
 
+@{
+    if(ViewBag.Created != null)
+    {
+        Response.Redirect("~/Benutzer");
+    }
+    if(ViewBag.ErrorList != null)
+    { 
+        foreach(var error in ViewBag.ErrorList)
+        {
+            <h3 style="color:Red">@error</h3>
+        }
+    }
+}
+
 <form action="~/Benutzer/Erstellen" method="post">
     <lable for="nickname">Benutzer Name
     <input type="text" name="nickname" value="@Model.nickname"/><br />
