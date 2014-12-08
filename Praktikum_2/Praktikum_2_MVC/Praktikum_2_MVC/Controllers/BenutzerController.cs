@@ -42,7 +42,7 @@ namespace Praktikum_2_MVC.Controllers
             }
             if(user.einschreibeDatum.Year < 1900)
             {
-                errorList.Add("Muss vor 1900 eingeschrieben sein");
+                errorList.Add("Muss nach 1900 eingeschrieben sein");
             }
 
             if (errorList.Count == 0)
