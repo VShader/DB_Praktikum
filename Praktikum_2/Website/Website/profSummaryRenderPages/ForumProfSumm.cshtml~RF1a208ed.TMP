@@ -20,17 +20,13 @@
         var reader = entry.getReader(queryString);
 
 <h2>Forum Beiträge</h2>
-        
-    string oldDescription = "";
+    @{
+        string oldDescription;
+    }
         for(; reader.Read(); ++forumCount)
         {
-            string newDescription = reader["Bezeichnung"].ToString();
-            if(newDescription.Equals(oldDescription))
-            {
-                --forumCount;
-            }
-            oldDescription = newDescription;
-    <h3>@newDescription</h3>
+            var newDescription = reader["Bezeichnung"];
+    <h3>@reader["Bezeichnung"]</h3>
     <ul>
         @*@for (; reader.Read(); ++postCount)*@
         @{

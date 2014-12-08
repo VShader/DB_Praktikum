@@ -24,9 +24,19 @@
 
 <h2>Forum Beiträge</h2>
 @{
+    uint countForum = 0;
+    string oldDescription = "";
         foreach(var item in Model.Beiträge)
         {
-<h3>@item.description</h3>
+            ++countForum;
+            if (item.description.Equals(oldDescription))
+            {
+                --countForum;
+            }   else
+            {
+<h3>@item.description</h3>                
+            }
+            oldDescription = item.description;
 <ul>
         @{
             var time = item.changedAt;
@@ -47,7 +57,7 @@
         }
         else
         {
-<p>@Model.Beiträge.Count Beiträge in @Model.Beiträge.Count Foren</p>
+<p>@Model.Beiträge.Count Beiträge in @countForum Foren</p>
         }
 }
 
