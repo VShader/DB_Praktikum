@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Praktikum_2_MVC.Controllers
@@ -20,12 +21,17 @@ namespace Praktikum_2_MVC.Controllers
 
         public ActionResult Erstellen()
         {
-            return View();
+            return View(new Student());
         }
 
         [HttpPost]
-        public ActionResult Erstellen(Benutzer user, string repeatPw)
+        public ActionResult Erstellen(Student user, string repeatPw)
         {
+            if(user.nickname.Length != 0 && user.email.Length != 0 &&  user.password.Equals(repeatPw) && user.einschreibeDatum.Year >= 1900)
+            {
+                user.password = Crypto.Hash(user.password, "md5");
+            }
+            user.createInDB();
             return View(user);
         }
 	}

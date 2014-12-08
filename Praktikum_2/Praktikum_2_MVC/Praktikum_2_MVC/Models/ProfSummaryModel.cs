@@ -10,15 +10,21 @@ namespace Praktikum_2_MVC.Models
     public class ProfSummary
     {
         public string Nickname { get; set; }
+        public string ProfName { get; set; }
         public List<ForumBeitrag> Beiträge { get; set; }
         public List<Dokument> Dokumente { get; set; }
         public List<Modul> Module { get; set; }
 
         public static ProfSummary Load(string nickname)
         {
+            var entry = new SqlEntry();
+            var reader = entry.getReader(queryString + nickname + "'");
+            reader.Read();
+            var name = reader["AkademischerTitel"].ToString() +" " + reader["Nachname"].ToString();
             var result = new ProfSummary
                              {
                                  Nickname = nickname,
+                                 ProfName = name,
                                  Beiträge = ForumBeitrag.getBeitragByUser(nickname),
                                  Dokumente = Dokument.getDokumentByUser(nickname),
                                  Module = Modul.getModulByUser(nickname)
@@ -27,7 +33,7 @@ namespace Praktikum_2_MVC.Models
             
             return result;
         }
-        string queryString = "SELECT Professoren.AkademischerTitel, Benutzer.Nachname " +
+        private static string queryString = "SELECT Professoren.AkademischerTitel, Benutzer.Nachname " +
                       "FROM Benutzer " +
                       "INNER JOIN Professoren ON Professoren.Nickname = Benutzer.Nickname " +
                       "WHERE Benutzer.Nickname = '";

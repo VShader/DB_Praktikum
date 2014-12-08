@@ -30,19 +30,36 @@ namespace Praktikum_2_MVC.Models
         public string nachname { get; set; }
         public string password { get; set; }
         public string email { get; set; }
+
+        public void createInDB()
+        {
+            var entry = new SqlEntry();
+            entry.insertInto(queryString + nickname + "', '" + vorname + "', '" + nachname + "', '" + password + "', '" + email + "')");
+        }
+        private string queryString = "INSERT INTO Benutzer(Nickname, Vorname, Nachname, Passwort, Email) VALUES('";
     }
 
     public class Student : Benutzer
     {
-        Student(string nickname, string vorname, string nachname, string password, string email, ushort matrikelnumber, DateTime einschreibeDatum) 
-            : base(nickname, vorname, nachname, password, email)
+        public Student()
+        { }
+        public Student(string nickname, string vorname, string nachname, string password, string email, ushort matrikelnumber, DateTime einschreibeDatum) 
+             : base(nickname, vorname, nachname, password, email)
         {
             this.matrikelnumber = matrikelnumber;
             this.einschreibeDatum = einschreibeDatum;
         }
 
-        public ushort matrikelnumber {get; set; }
+        public ushort matrikelnumber { get; set; }
         public DateTime einschreibeDatum { get; set; }
+
+        public void createInDB()
+        {
+            base.createInDB();
+            var entry = new SqlEntry();
+            entry.insertInto(queryString + nickname + "', '" + matrikelnumber + "', '" + einschreibeDatum + "')");
+        }
+        private string queryString = "INSERT INTO Studenten(Nickname, Matrikel, EinschreibeDatum) VALUES('";
     }
 
     public class BenutzerDB

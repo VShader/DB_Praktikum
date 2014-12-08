@@ -35,6 +35,21 @@ namespace Website
                 throw;
             }
         }
+
+        public void insertInto(String query)
+        {
+            try
+            {
+                connection = new SqlConnection(sqlAddress);
+                var command = new SqlCommand(query);
+                command.Connection = connection;
+                connection.Open();
+                command.ExecuteNonQuery();
+            }   catch (SqlException e)
+            {
+                throw;
+            }
+        }
         public void Close()
         {
             connection.Close();

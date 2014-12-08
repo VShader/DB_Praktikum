@@ -26,12 +26,10 @@
 --SELECT Beiträge.Benutzer, Dokumente.Titel as 'Datei', Diskussionen.Titel as 'Diskussion' FROM dbo.Beiträge JOIN dbo.DokumenteHeftenAnBeiträge ON DokumenteHeftenAnBeiträge.BeitragsID=Beiträge.ID JOIN Dokumente ON DokumenteHeftenAnBeiträge.DokumentenID=Dokumente.ID JOIN Diskussionen ON Diskussionen.ID=Beiträge.DiskussionsID;
 
 -- Aufgabe 4
---SELECT * FROM dbo.Foren WHERE ID=1
---UNION
---SELECT * FROM dbo.Foren WHERE OberforumID IN (SELECT ID FROM dbo.Foren WHERE ID=1)
-
-WITH ente(id, oid) as
-(SELECT Foren.ID, Foren.OberforumID FROM dbo.Foren WHERE ID =1
+WITH F(OberID, UnterID, Tiefe) AS
+(
+SELECT Foren.OberforumID as OberID, Foren.ID as UnterID, 1 as Tiefe FROM Foren WHERE OberforumID IS NULL
 UNION ALL
-SELECT * FROM ente)
-SELECT * FROM ente;
+SELECT F.UnterID as OberID, Foren.ID as UnterID, F.Tiefe+1 FROM F JOIN Foren ON Foren.OberforumID=F.UnterID
+)
+SELECT F.*, Foren.Bezeichnung FROM F JOIN Foren ON UnterID=Foren.ID ORDER BY OberID
