@@ -1,0 +1,125 @@
+﻿@using System.Data.SqlClient
+@using Website
+@using Praktikum_3_Disconnected_Data_and_LINQ.Models
+@model ProfSummary
+@{
+    string nickname = Request.QueryString["prof"];
+    
+    
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+
+    string title = Model.ProfName;
+    ViewBag.Title = title;  
+}
+
+
+     <a href="~/Module" target="_self">zurück</a>
+
+<h1>@title</h1>
+
+@*@RenderPage("~/Module/profSummaryRenderPages/ForumProfSumm", nickname)
+@RenderPage("~/Module/profSummaryRenderPages/DocProfSumm", nickname)
+@RenderPage("~/Module/profSummaryRenderPages/ResponsProfSumm", nickname)*@
+
+
+<h2>Forum Beiträge</h2>
+@{
+    uint countForum = 0;
+    string oldDescription = "";
+        foreach(var item in Model.Beiträge)
+        {
+            ++countForum;
+            if (item.description.Equals(oldDescription))
+            {
+                --countForum;
+            }   else
+            {
+<h3>@item.description</h3>                
+            }
+            oldDescription = item.description;
+<ul>
+        @{
+            var time = item.changedAt;
+            var post = item.message;
+        //Get 0-150 characters
+        <li>@(post.Substring(0, Math.Min(post.Length, 150))) vor @DateTime.Now.Subtract(time).Days Tagen</li>
+        }
+</ul>
+
+        }
+        if(Model.Beiträge.Count == 0)
+        {
+<p>No entries!!!</p>
+        }
+        else if (Model.Beiträge.Count == 1)
+        {
+<p>@Model.Beiträge.Count Beiträge in 1 Forum</p>
+        }
+        else
+        {
+<p>@Model.Beiträge.Count Beiträge in @countForum Foren</p>
+        }
+}
+
+
+
+
+
+<h2>Bereitgestellte Dokumente</h2>
+<ul>
+    @{
+        foreach (var item in Model.Dokumente)
+        {
+            var time = item.Bereitstellung;
+            <li>
+                <p>@item.Titel vor @DateTime.Now.Subtract(time).Days Tagen</p>
+            </li>
+        }
+    }
+</ul>
+@{
+        if( Model.Dokumente.Count == 0)
+        {
+<p>No documents!!!</p>
+        }
+        else if (Model.Dokumente.Count == 1)
+        {
+<p>1 Dokument</p>
+        }
+        else
+        {
+<p>@Model.Dokumente.Count Dokumente</p>
+        }
+}
+
+
+
+
+
+
+
+<h2>Verantwortlich für folgende Module</h2>
+<ul>
+    @{
+        foreach (var item in Model.Module)
+        {
+            <li>
+                <p>@item.description</p>
+            </li>
+        }
+    }
+</ul>
+@{
+        if(Model.Module.Count == 0)
+        {
+<p>No modules!!!</p>
+        }
+        else if (Model.Module.Count == 1)
+        {
+<p>1 Modul</p>
+        }
+        else
+        {
+<p>@Model.Module.Count Module</p>
+        }
+}

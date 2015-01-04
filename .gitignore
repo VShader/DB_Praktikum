@@ -3,6 +3,10 @@
 *.jpg
 *.zip
 
+# MSVS Files and Folders
+*.TMP
+*.suo
+
 bin/
 obj/
 packages/

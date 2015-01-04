@@ -1,0 +1,37 @@
+﻿@using Praktikum_3_Disconnected_Data_and_LINQ.Models
+@model List<Benutzer>
+
+@{var title = "Benutzer";
+ViewBag.Title = title;
+Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+
+<table border="0" width="100%"
+    <tr>
+        <td><a href="~/Home" target="_self">zurück</a></td>
+        <td><a href="~/Benutzer/Erstellen" target="_self">Benutzer erstellen</a></td>
+    </tr>
+</table>
+
+<h1>@title</h1>
+
+<table border=1 width="100%">
+    <tr>
+        <th>Nickname</th>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th>E-Mail</th>
+    </tr>
+    @{
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.nickname</td>
+                <td>@item.vorname</td>
+                <td>@item.nachname</td>
+                <td>@item.email</td>
+            </tr>
+        }
+    }
+</table>

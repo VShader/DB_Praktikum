@@ -1,0 +1,30 @@
+﻿@using Praktikum_3_Disconnected_Data_and_LINQ.Models
+@model List<Modul>
+
+@{var title = "Module";
+    ViewBag.Title = title;
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+
+<a href="~/Home" target="_self">zurück</a>
+
+<h1>@title</h1>
+     
+<table border=1 width="100%">
+	<tr>
+		<th>Fach No.</th>
+		<th>Bezeichnung</th>
+		<th>Verantwortlicher</th>
+	</tr>
+    @{
+    foreach(var item in Model)
+    {
+    <tr>
+        <td>@item.subNum</td>
+		<td>@item.description</td>
+        <td><a href="~/Module/ProfSummary?prof=@item.guarantor">@item.profName</a></td>
+	</tr>
+    }
+    }
+</table>

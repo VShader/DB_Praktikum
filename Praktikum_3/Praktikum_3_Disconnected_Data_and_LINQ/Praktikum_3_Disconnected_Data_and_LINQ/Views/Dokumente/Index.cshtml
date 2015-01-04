@@ -1,0 +1,34 @@
+﻿@using Praktikum_3_Disconnected_Data_and_LINQ.Models;
+@model DataSet1.DokumenteDataTable
+@{
+    ViewBag.Title = "Dokumente";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    string index = ViewBag.kategorie;
+}
+
+
+<nav>
+    <ul id="navlist">
+        <li><a href="~/Dokumente/Vorlesung">Vorlesung</a></li>
+        <li><a href="~/Dokumente/Übung">&Uuml;bung</a></li>
+        <li><a href="~/Dokumente/Praktikum">Praktikum</a></li>
+    </ul>
+</nav>
+
+<h2>Dokumente aus der Kategorie @index</h2>
+
+<table border=1 width="100%">
+    <tr>
+        <th>Bereitgestellt am</th>
+        <th>Von</th>
+        <th>Titel</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>@item.Bereitstellungsdatum</td>
+        <td>@item.Benutzer</td>
+        <td>@item.Titel</td>
+    </tr>
+    }
+</table>
