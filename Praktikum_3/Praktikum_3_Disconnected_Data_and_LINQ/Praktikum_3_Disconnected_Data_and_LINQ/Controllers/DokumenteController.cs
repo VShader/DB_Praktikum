@@ -11,11 +11,6 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
     {
         public ActionResult Index(string kategorie)
         {
-            if (!(kategorie.Equals("Vorlesung", StringComparison.Ordinal) || 
-                kategorie.Equals("Übung", StringComparison.Ordinal) ||
-                kategorie.Equals("Praktikum", StringComparison.Ordinal)))   Response.Redirect("~/Dokumente/Vorlesung");
-
-
             var dokumenteTableAdapter = new Models.DataSet1TableAdapters.DokumenteTableAdapter();
             var dataset = dokumenteTableAdapter.GetData(kategorie);
 

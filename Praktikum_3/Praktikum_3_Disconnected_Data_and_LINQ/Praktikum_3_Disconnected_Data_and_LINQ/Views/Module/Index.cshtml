@@ -3,7 +3,6 @@
 
 @{var title = "Module";
     ViewBag.Title = title;
-    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
 
@@ -23,7 +22,7 @@
     <tr>
         <td>@item.subNum</td>
 		<td>@item.description</td>
-        <td><a href="~/Module/ProfSummary?prof=@item.guarantor">@item.profName</a></td>
+        <td><a href="~/Module/ProfSummary/@item.guarantor">@item.profName</a></td>
 	</tr>
     }
     }

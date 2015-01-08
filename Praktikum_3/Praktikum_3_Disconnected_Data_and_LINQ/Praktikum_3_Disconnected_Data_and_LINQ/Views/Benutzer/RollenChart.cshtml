@@ -1,0 +1,19 @@
+﻿@using Praktikum_3_Disconnected_Data_and_LINQ.Models
+@model DataSet1.BenutzerrollenDataTable
+@{
+    ViewBag.Title = "RollenChart";
+}
+
+<h2>RollenChart</h2>
+
+@{
+    var chart = new Chart(width: 600, height: 400)
+            .AddSeries(chartType: "pie", legend: "Benutzer", xValue: new[] { "Jan", "Feb", "Mar", "Apr", "May" }, yValues: new[] { "20", "10", "15", "5", "25" })
+            .Write();
+            
+    //var dataview = new System.Data.DataView(Model);
+    //var chart = new Chart(width: 600, height: 400)
+    //.AddTitle("BenutzerRollen")
+    //    .DataBindTable(dataSource: dataview, xField: "Ente")
+    //    .Write();
+}

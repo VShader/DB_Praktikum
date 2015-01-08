@@ -10,9 +10,22 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
 {
     public class BenutzerController : Controller
     {
-        //
-        // GET: /Benutzer/
-        public ActionResult Index()
+        public ActionResult Index(string buchstabe = "")
+        {
+            var dataSet = new Models.DataSet1TableAdapters.BenutzerrollenTableAdapter();
+            Models.DataSet1.BenutzerrollenDataTable benutzer;
+            if(buchstabe.Length == 0){  benutzer = dataSet.GetData();   }   
+            else   
+            {   
+                benutzer = dataSet.GetDataByBuchstabe(buchstabe);
+                ViewBag.buchstabe = buchstabe;
+            }
+
+            return View(benutzer);
+        }
+
+                // GET: /Benutzer/
+        public ActionResult Uebersicht()
         {
             var db = new BenutzerDB();
             var benutzer = db.getBenutzer();
@@ -55,6 +68,12 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
                 ViewBag.ErrorList = errorList;
             }
             return View(user);
+        }
+
+        public ActionResult RollenChart()
+        {
+            var dataSet = new Models.DataSet1TableAdapters.BenutzerrollenTableAdapter();
+            return View(dataSet.GetData());
         }
 	}
 }

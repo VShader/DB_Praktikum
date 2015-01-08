@@ -1,37 +1,89 @@
 ﻿@using Praktikum_3_Disconnected_Data_and_LINQ.Models
-@model List<Benutzer>
-
-@{var title = "Benutzer";
-ViewBag.Title = title;
-Layout = "~/Views/Shared/_LoginLayout.cshtml";
+@model DataSet1.BenutzerrollenDataTable
+@{
+    ViewBag.Title = "Benutzer";
 }
 
+<nav>
+    <ul id="navlist">
+        <li><a href="~/Benutzer/Erstellen" target="_self">Benutzer erstellen</a></li>
+        <li><a href="~/Benutzer/Uebersicht" target="_self">Benutzer Liste</a></li>
+    </ul>
+</nav>
 
-<table border="0" width="100%"
-    <tr>
-        <td><a href="~/Home" target="_self">zurück</a></td>
-        <td><a href="~/Benutzer/Erstellen" target="_self">Benutzer erstellen</a></td>
-    </tr>
-</table>
+@{
+    for (char buchstabe = 'A'; buchstabe <= 'Z'; ++buchstabe)
+    {
+        <a href="~/Benutzer?buchstabe=@buchstabe">@buchstabe</a>
+        <span> | </span>
+    }
 
-<h1>@title</h1>
+    string titel = "alle";
+    //Chart chart = null;
+    if (ViewBag.buchstabe != null) { titel = ViewBag.buchstabe; }
+    else
+    {
+        <img src="~/Benutzer/RollenChart"/>
+    //    chart = new Chart(width: 600, height: 400)
+    //        .AddSeries(chartType: "pie", legend: "Benutzer", xValue: new[] { "Jan", "Feb", "Mar", "Apr", "May" }, yValues: new[] { "20", "10", "15", "5", "25" })
+    //        .Write();
+    }
 
-<table border=1 width="100%">
-    <tr>
-        <th>Nickname</th>
-        <th>Vorname</th>
-        <th>Nachname</th>
-        <th>E-Mail</th>
-    </tr>
-    @{
-        foreach (var item in Model)
+<h2>Benutzer (@titel)</h2>
+
+    var professoren = new List<DataSet1.BenutzerrollenRow>();
+    var mitarbeiter = new List<DataSet1.BenutzerrollenRow>();
+    var studenten = new List<DataSet1.BenutzerrollenRow>();
+
+    foreach (var item in Model)
+    {
+        if (item.Rolle == "Professor") { professoren.Add(item); }
+        else if (item.Rolle == "Mitarbeiter") { mitarbeiter.Add(item); }
+        else if (item.Rolle == "Student") { studenten.Add(item); }
+    }
+}
+    
+@if(professoren.Count > 0)
+{
+    <table border=1 width="100%">
+        <tr>
+            <th>Professoren</th>
+        </tr>
+    @foreach(var item in professoren)
+    {
+        <tr>
+            <td><a href="~/Module/ProfSummary/@item.Nickname">@item.Nickname</a></td>
+        </tr>
+    }
+    </table>
+}
+
+@if(mitarbeiter.Count > 0)
+{
+    <table border=1 width="100%">
+        <tr>
+            <th>Mitarbeiter</th>
+        </tr>
+        @foreach (var item in mitarbeiter)
         {
             <tr>
-                <td>@item.nickname</td>
-                <td>@item.vorname</td>
-                <td>@item.nachname</td>
-                <td>@item.email</td>
+                <td>@item.Nickname</td>
             </tr>
         }
-    }
-</table>
+    </table>
+}
+
+@if(studenten.Count > 0)
+{
+    <table border=1 width="100%">
+        <tr>
+            <th>Studenten</th>
+        </tr>
+        @foreach (var item in studenten)
+        {
+            <tr>
+                <td>@item.Nickname</td>
+            </tr>
+        }
+    </table>
+}

@@ -4,10 +4,6 @@
 @model ProfSummary
 @{
     string nickname = Request.QueryString["prof"];
-    
-    
-    Layout = "~/Views/Shared/_LoginLayout.cshtml";
-
     string title = Model.ProfName;
     ViewBag.Title = title;  
 }
