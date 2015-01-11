@@ -25,11 +25,25 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ
                 defaults: new { controller = "Module", action = "ProfSummary", prof = "" }
             );
 
+
             //routes.MapRoute(
-            //    name: "BenutzerListe",
-            //    url: "Benutzer/BenutzerListe/{buchstabe}",
-            //    defaults: new { controller = "Benutzer", action = "BenutzerListe", buchstabe = "A" }
+            //    name: "BenutzerUebersicht",
+            //    url: "Benutzer/Uebersicht/{id}",
+            //    defaults: new { controller = "Benutzer", action = "Uebersicht", id = UrlParameter.Optional }
             //);
+
+            //routes.MapRoute(
+            //    name: "BenutzerRollenChart",
+            //    url: "Benutzer/RollenChart/{id}",
+            //    defaults: new { controller = "Benutzer", action = "RollenChart", id = UrlParameter.Optional }
+            //);
+
+            //routes.MapRoute(
+            //    name: "Benutzer",
+            //    url: "Benutzer/{buchstabe}",
+            //    defaults: new { controller = "Benutzer", action = "Index", buchstabe = "" }
+            //);
+
 
             routes.MapRoute(
                 name: "Default",

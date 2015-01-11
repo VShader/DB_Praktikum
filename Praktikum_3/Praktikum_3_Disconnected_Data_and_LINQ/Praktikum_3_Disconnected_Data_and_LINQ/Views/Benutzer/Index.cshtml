@@ -23,7 +23,6 @@
     if (ViewBag.buchstabe != null) { titel = ViewBag.buchstabe; }
     else
     {
-        <img src="~/Benutzer/RollenChart"/>
     //    chart = new Chart(width: 600, height: 400)
     //        .AddSeries(chartType: "pie", legend: "Benutzer", xValue: new[] { "Jan", "Feb", "Mar", "Apr", "May" }, yValues: new[] { "20", "10", "15", "5", "25" })
     //        .Write();
@@ -42,48 +41,58 @@
         else if (item.Rolle == "Student") { studenten.Add(item); }
     }
 }
-    
-@if(professoren.Count > 0)
-{
-    <table border=1 width="100%">
-        <tr>
-            <th>Professoren</th>
-        </tr>
-    @foreach(var item in professoren)
-    {
-        <tr>
-            <td><a href="~/Module/ProfSummary/@item.Nickname">@item.Nickname</a></td>
-        </tr>
-    }
-    </table>
-}
 
-@if(mitarbeiter.Count > 0)
-{
-    <table border=1 width="100%">
-        <tr>
-            <th>Mitarbeiter</th>
-        </tr>
-        @foreach (var item in mitarbeiter)
-        {
-            <tr>
-                <td>@item.Nickname</td>
-            </tr>
-        }
-    </table>
-}
+<table border=0>
+    <tr>
+        <td>
+            @if (professoren.Count > 0)
+            {
+                <table border=1 width="100%">
+                    <tr>
+                        <th>Professoren</th>
+                    </tr>
+                    @foreach (var item in professoren)
+                    {
+                        <tr>
+                            <td><a href="~/Module/ProfSummary/@item.Nickname">@item.Nickname</a></td>
+                        </tr>
+                    }
+                </table>
+            }
 
-@if(studenten.Count > 0)
-{
-    <table border=1 width="100%">
-        <tr>
-            <th>Studenten</th>
-        </tr>
-        @foreach (var item in studenten)
-        {
-            <tr>
-                <td>@item.Nickname</td>
-            </tr>
-        }
-    </table>
-}
+            @if (mitarbeiter.Count > 0)
+            {
+                <table border=1 width="100%">
+                    <tr>
+                        <th>Mitarbeiter</th>
+                    </tr>
+                    @foreach (var item in mitarbeiter)
+                    {
+                        <tr>
+                            <td>@item.Nickname</td>
+                        </tr>
+                    }
+                </table>
+            }
+
+            @if (studenten.Count > 0)
+            {
+                <table border=1 width="100%">
+                    <tr>
+                        <th>Studenten</th>
+                    </tr>
+                    @foreach (var item in studenten)
+                    {
+                        <tr>
+                            <td>@item.Nickname</td>
+                        </tr>
+                    }
+                </table>
+            }
+        </td>
+        <td>
+            @if (ViewBag.buchstabe == null)
+            { <img src="~/Benutzer/RollenChart" /> }
+        </td>
+    </tr>
+</table> 

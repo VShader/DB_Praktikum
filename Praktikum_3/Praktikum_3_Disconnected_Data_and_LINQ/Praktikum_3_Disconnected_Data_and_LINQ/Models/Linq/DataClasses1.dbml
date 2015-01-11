@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Praktikum" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=TEST-PC\SQLEXPRESS;Initial Catalog=Praktikum;Persist Security Info=True;User ID=SA" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PraktikumConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Beiträge" Member="Beiträges">
+    <Type Name="Beiträge">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Mitteilung" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="DiskussionsID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Benutzer" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Änderungsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Beiträge_DokumenteHeftenAnBeiträge" Member="DokumenteHeftenAnBeiträges" ThisKey="ID" OtherKey="BeitragsID" Type="DokumenteHeftenAnBeiträge" />
+      <Association Name="Beiträge_DokumenteHeftenAnBeiträge1" Member="DokumenteHeftenAnBeiträges1" ThisKey="ID" OtherKey="DokumentenID" Type="DokumenteHeftenAnBeiträge" />
+      <Association Name="Benutzer_Beiträge" Member="Benutzer1" ThisKey="Benutzer" OtherKey="Nickname" Type="Benutzer" IsForeignKey="true" />
+      <Association Name="Diskussionen_Beiträge" Member="Diskussionen" ThisKey="DiskussionsID" OtherKey="ID" Type="Diskussionen" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Benutzer" Member="Benutzers">
+    <Type Name="Benutzer">
+      <Column Name="Nickname" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Vorname" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Nachname" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Passwort" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="Benutzer_Beiträge" Member="Beiträges" ThisKey="Nickname" OtherKey="Benutzer" Type="Beiträge" />
+      <Association Name="Benutzer_Dokumente" Member="Dokumentes" ThisKey="Nickname" OtherKey="Benutzer" Type="Dokumente" />
+      <Association Name="Benutzer_Mitarbeiter" Member="Mitarbeiter" ThisKey="Nickname" OtherKey="Nickname" Type="Mitarbeiter" Cardinality="One" />
+      <Association Name="Benutzer_Professoren" Member="Professoren" ThisKey="Nickname" OtherKey="Nickname" Type="Professoren" Cardinality="One" />
+      <Association Name="Benutzer_Studenten" Member="Studenten" ThisKey="Nickname" OtherKey="Nickname" Type="Studenten" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Diskussionen" Member="Diskussionens">
+    <Type Name="Diskussionen">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Titel" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AnzahlSichtungen" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ForumID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Diskussionen_Beiträge" Member="Beiträges" ThisKey="ID" OtherKey="DiskussionsID" Type="Beiträge" />
+      <Association Name="Foren_Diskussionen" Member="Foren" ThisKey="ForumID" OtherKey="ID" Type="Foren" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Dokumente" Member="Dokumentes">
+    <Type Name="Dokumente">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Kategorie" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Datei" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Titel" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Bereitstellungsdatum" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Benutzer" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ModulID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Benutzer_Dokumente" Member="Benutzer1" ThisKey="Benutzer" OtherKey="Nickname" Type="Benutzer" IsForeignKey="true" />
+      <Association Name="Module_Dokumente" Member="Module" ThisKey="ModulID" OtherKey="ID" Type="Module" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DokumenteHeftenAnBeiträge" Member="DokumenteHeftenAnBeiträges">
+    <Type Name="DokumenteHeftenAnBeiträge">
+      <Column Name="BeitragsID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DokumentenID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Beiträge_DokumenteHeftenAnBeiträge" Member="Beiträge" ThisKey="BeitragsID" OtherKey="ID" Type="Beiträge" IsForeignKey="true" />
+      <Association Name="Beiträge_DokumenteHeftenAnBeiträge1" Member="Beiträge1" ThisKey="DokumentenID" OtherKey="ID" Type="Beiträge" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Foren" Member="Forens">
+    <Type Name="Foren">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Bezeichnung" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OberforumID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Foren_Diskussionen" Member="Diskussionens" ThisKey="ID" OtherKey="ForumID" Type="Diskussionen" />
+      <Association Name="Foren_Foren" Member="Forens" ThisKey="ID" OtherKey="OberforumID" Type="Foren" />
+      <Association Name="Foren_Module" Member="Modules" ThisKey="ID" OtherKey="ForumID" Type="Module" />
+      <Association Name="Foren_Foren" Member="Foren1" ThisKey="OberforumID" OtherKey="ID" Type="Foren" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Mitarbeiter" Member="Mitarbeiters">
+    <Type Name="Mitarbeiter">
+      <Column Name="Nickname" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RaumNr" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Aufgabenbereich" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Benutzer_Mitarbeiter" Member="Benutzer" ThisKey="Nickname" OtherKey="Nickname" Type="Benutzer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Module" Member="Modules">
+    <Type Name="Module">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Bezeichnung" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FachNummer" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Verantwortlicher" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ForumID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Module_Dokumente" Member="Dokumentes" ThisKey="ID" OtherKey="ModulID" Type="Dokumente" />
+      <Association Name="Foren_Module" Member="Foren" ThisKey="ForumID" OtherKey="ID" Type="Foren" IsForeignKey="true" />
+      <Association Name="Professoren_Module" Member="Professoren" ThisKey="Verantwortlicher" OtherKey="Nickname" Type="Professoren" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Professoren" Member="Professorens">
+    <Type Name="Professoren">
+      <Column Name="Nickname" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AkademischerTitel" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="Professoren_Module" Member="Modules" ThisKey="Nickname" OtherKey="Verantwortlicher" Type="Module" />
+      <Association Name="Benutzer_Professoren" Member="Benutzer" ThisKey="Nickname" OtherKey="Nickname" Type="Benutzer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Studenten" Member="Studentens">
+    <Type Name="Studenten">
+      <Column Name="Nickname" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Matrikel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EinschreibeDatum" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Benutzer_Studenten" Member="Benutzer" ThisKey="Nickname" OtherKey="Nickname" Type="Benutzer" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
