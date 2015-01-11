@@ -169,6 +169,7 @@
     <Content Include="Views\Benutzer\RollenChart.cshtml" />
     <Content Include="Views\Foren\Index.cshtml" />
     <Content Include="Views\Foren\NeueDiskussion.cshtml" />
+    <Content Include="Views\Diskussion\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -178,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Diskussion\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

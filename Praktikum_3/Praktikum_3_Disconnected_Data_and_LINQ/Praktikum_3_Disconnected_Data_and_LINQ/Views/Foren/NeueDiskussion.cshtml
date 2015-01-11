@@ -9,7 +9,7 @@
     <fieldset>
         <legend>@ViewBag.Title</legend>
         <label for="benutzer">Benutzer</label><br />
-        <input type="text" name="benutzer" size="20" maxlength="40" />
+        <input type="text" name="benutzer" value="@Session["nickname"]" readonly="readonly" varsize="20" maxlength="40" />
         <p>
             <label for="diskussionstitel">Diskussionstitel</label><br />
             <input type="text" name="diskussionstitel" size="20" maxlength="40" />

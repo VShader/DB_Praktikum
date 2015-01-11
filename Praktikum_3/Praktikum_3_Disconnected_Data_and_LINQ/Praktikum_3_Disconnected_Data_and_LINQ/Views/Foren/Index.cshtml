@@ -39,7 +39,7 @@
         @foreach (var item in Model.Diskussionen)
         {
             <tr>
-                <td>@item.Titel</td>
+                <td><a href="~/Diskussion?id=@item.ID">@item.Titel</a></td>
                 <td>@item.AnzahlSichtungen</td>
             </tr>
         }

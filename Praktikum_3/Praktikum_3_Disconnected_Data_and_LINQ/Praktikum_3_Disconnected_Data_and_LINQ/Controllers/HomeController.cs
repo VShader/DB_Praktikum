@@ -33,6 +33,7 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
                 if (db.authenticateBenutzer(user))
                 {
                     Session["authenticated"] = "ok";
+                    Session["nickname"] = user.nickname;
                 }
             }   catch(BenutzerDontExistException)
             {

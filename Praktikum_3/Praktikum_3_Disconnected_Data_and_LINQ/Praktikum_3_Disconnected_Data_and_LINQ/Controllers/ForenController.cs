@@ -56,36 +56,39 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
         [HttpPost]
         public ActionResult NeueDiskussion(int id, string benutzer, string diskussionstitel, string mitteilung)
         {
-            if(id <= 0)  {   Redirect("~/Foren");    }
-            ViewBag.forumID = id;
-            ViewBag.success = true;
-
-            var db = new DataClasses1DataContext();
-
-            var diskussion = new Diskussionen { Titel = diskussionstitel, ForumID = id };
-            db.Diskussionens.InsertOnSubmit(diskussion);
-            try 
-	        {	        
-		        db.SubmitChanges();
-	        }
-	        catch (Exception)
-	        {
-	        }
-
-            var getDiskussionID = from p in db.Diskussionens
-                                  where p.Titel == diskussionstitel
-                                  select p.ID;
-            var beitrag = new Beiträge   {   Benutzer=benutzer, Mitteilung=mitteilung, Änderungsdatum=DateTime.Now, 
-                DiskussionsID=getDiskussionID.First()};
-            db.Beiträges.InsertOnSubmit(beitrag);
-            try
+            if(id <= 0 || diskussionstitel.Length == 0 || mitteilung.Length == 0)  {   ViewBag.success=false;    }
+            else
             {
-                db.SubmitChanges();
-            }
-            catch (Exception)
-            {
-            }
+                ViewBag.forumID = id;
+                ViewBag.success = true;
+
+                var db = new DataClasses1DataContext();
+
+                var diskussion = new Diskussionen { Titel = diskussionstitel, ForumID = id };
+                db.Diskussionens.InsertOnSubmit(diskussion);
+                try 
+	            {	        
+		            db.SubmitChanges();
+	            }
+	            catch (Exception)
+	            {
+	            }
+
+                var getDiskussionID = from p in db.Diskussionens
+                                      where p.Titel == diskussionstitel
+                                      select p.ID;
+                var beitrag = new Beiträge   {   Benutzer=benutzer, Mitteilung=mitteilung, Änderungsdatum=DateTime.Now, 
+                    DiskussionsID=getDiskussionID.First()};
+                db.Beiträges.InsertOnSubmit(beitrag);
+                try
+                {
+                    db.SubmitChanges();
+                }
+                catch (Exception)
+                {
+                }
                         
+                }
             return View();
         }
     }
