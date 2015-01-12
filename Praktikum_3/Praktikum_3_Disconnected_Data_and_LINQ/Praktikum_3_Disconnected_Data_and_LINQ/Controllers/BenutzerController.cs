@@ -73,7 +73,19 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
         public ActionResult RollenChart()
         {
             var dataSet = new Models.DataSet1TableAdapters.BenutzerrollenTableAdapter();
-            return View(dataSet.GetData());
+            var tabelle = dataSet.GetData();
+
+            int anzahlMitarbeiter = 0;
+            int anzahlProf = 0;
+            int anzahlStudent = 0;
+            foreach(var item in tabelle)
+            {
+                if (item.Rolle == "Mitarbeiter") { ++anzahlMitarbeiter; }
+                else if (item.Rolle == "Professor") { ++anzahlProf; }
+                else if (item.Rolle == "Student") { ++anzahlStudent; }
+            }
+            List<int> anzahl = new List<int> {  anzahlMitarbeiter, anzahlProf, anzahlProf };
+            return View(anzahl);
         }
 	}
 }
