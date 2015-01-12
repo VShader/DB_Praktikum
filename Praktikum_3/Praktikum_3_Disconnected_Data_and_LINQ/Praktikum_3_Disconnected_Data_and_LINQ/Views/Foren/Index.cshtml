@@ -10,7 +10,7 @@
 {
     <nav>
         <ul id="navlist">
-            <li><a href="~/Foren" target="_self">Zurück</a></li>
+            <li><a href="~/Foren?id=@ViewBag.OberforumID" target="_self">Zurück</a></li>
             <li><a href="~/Foren/NeueDiskussion?id=@Model.ForumAktuell.ID" target="_self">Neue Diskussion</a></li>
         </ul>
     </nav>
@@ -40,7 +40,10 @@
         {
             <tr>
                 <td><a href="~/Diskussion?id=@item.ID">@item.Titel</a></td>
-                <td>@item.AnzahlSichtungen</td>
+                <td>
+                    @item.AnzahlSichtungen
+                    @if(item.AnzahlSichtungen >= 10) {  <font color="red"><b>[HOT!]</b></font>  }
+                </td>
             </tr>
         }
     </table>

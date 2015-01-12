@@ -1,7 +1,25 @@
-﻿
-@{
-    ViewBag.Title = "Diskussion";
-}
+﻿@using Praktikum_3_Disconnected_Data_and_LINQ.Models.Linq
+@model IQueryable<Beiträge>
 
-<h2>Index</h2>
 
+<nav>
+    <ul id="navlist">
+        <li><a href="~/Foren?id=@ViewBag.ForenID" target="_self">Zurück</a></li>
+        <li><a href="~/Diskussion/Antworten?id=@Model.First().DiskussionsID" target="_self">Antworten</a></li>
+    </ul>
+</nav>
+
+<h2>@ViewBag.Title</h2>
+
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Benutzer<br />
+                @item.Änderungsdatum
+            </td>
+            <td>@item.Mitteilung</td>
+        </tr>
+    }
+</table>

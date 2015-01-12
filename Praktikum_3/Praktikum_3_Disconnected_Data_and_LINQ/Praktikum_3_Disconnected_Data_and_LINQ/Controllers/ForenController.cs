@@ -39,6 +39,7 @@ namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
             { 
                 data.ForumAktuell = aktuellesForum.First();
                 data.Diskussionen = diskussionen.AsEnumerable();
+                ViewBag.OberforumID = aktuellesForum.First().OberforumID;
             }
             
             

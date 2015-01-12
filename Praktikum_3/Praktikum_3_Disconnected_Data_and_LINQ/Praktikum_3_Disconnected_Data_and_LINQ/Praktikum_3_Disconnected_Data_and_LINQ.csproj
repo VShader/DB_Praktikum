@@ -170,6 +170,7 @@
     <Content Include="Views\Foren\Index.cshtml" />
     <Content Include="Views\Foren\NeueDiskussion.cshtml" />
     <Content Include="Views\Diskussion\Index.cshtml" />
+    <Content Include="Views\Diskussion\Antworten.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
