@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Praktikum_3_Disconnected_Data_and_LINQ.Models.Linq
+namespace Praktikum_4_XML_and_doc_oriented_db.Models.Linq
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;

@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Debug 
+#if DEBUG
+    Session["authenticated"] = "ok";
+    Session["nickname"] = "trauti";
+#endif
+    if (Session["authenticated"] == null)   
+    {
+        Response.Redirect("~/Home/Login");   
+    }
+}
+@RenderBody()

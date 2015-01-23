@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Neue Diskussion erstellen";
+}
+
+@if (ViewBag.success) { Response.Redirect("~/Foren?id=" + ViewBag.forumID); }
+
+<form method="post" target="_self">
+    <fieldset>
+        <legend>@ViewBag.Title</legend>
+        <label for="benutzer">Benutzer</label><br />
+        <input type="text" name="benutzer" value="@Session["nickname"]" readonly="readonly" varsize="20" maxlength="40" />
+        <p>
+            <label for="diskussionstitel">Diskussionstitel</label><br />
+            <input type="text" name="diskussionstitel" size="20" maxlength="40" />
+            <input type="hidden" name="forumID" value="@ViewBag.forumID" />
+        </p>
+        <p>
+            <label for="mitteilung">Mitteilung</label><br />
+            <textarea name="mitteilung" rows="10" cols="50"></textarea><br />
+            <input type="submit" name="submit" value="Erstellen" />
+        </p>
+    </fieldset>
+</form>
+

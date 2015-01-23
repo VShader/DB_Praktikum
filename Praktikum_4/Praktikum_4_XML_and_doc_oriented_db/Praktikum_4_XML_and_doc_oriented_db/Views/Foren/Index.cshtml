@@ -1,0 +1,50 @@
+﻿@using Praktikum_4_XML_and_doc_oriented_db.Models.Linq
+@model UnterForenUndDiskussionen
+@{
+    if(Model.ForumAktuell != null)  {   ViewBag.Title = Model.ForumAktuell.Bezeichnung; }
+    else {  ViewBag.Title = "Foren"; }
+}
+
+
+@if (Model.ForumAktuell != null)
+{
+    <nav>
+        <ul id="navlist">
+            <li><a href="~/Foren?id=@ViewBag.OberforumID" target="_self">Zurück</a></li>
+            <li><a href="~/Foren/NeueDiskussion?id=@Model.ForumAktuell.ID" target="_self">Neue Diskussion</a></li>
+        </ul>
+    </nav>
+}
+
+<h1>@ViewBag.Title</h1>
+
+@if (Model.Foren != null)
+{
+    <h2>Unterforen</h2>
+    <ul>
+        @foreach (var item in Model.Foren)
+        {
+            <li><a href="~/Foren?id=@item.ID">@item.Bezeichnung</a></li>
+        }
+    </ul>
+}
+
+@if(Model.Diskussionen != null)
+{
+    <table border=1>
+        <tr>
+            <th>Diskussion</th>
+            <th>Sichtung</th>
+        </tr>
+        @foreach (var item in Model.Diskussionen)
+        {
+            <tr>
+                <td><a href="~/Diskussion?id=@item.ID">@item.Titel</a></td>
+                <td>
+                    @item.AnzahlSichtungen
+                    @if(item.AnzahlSichtungen >= 10) {  <font color="red"><b>[HOT!]</b></font>  }
+                </td>
+            </tr>
+        }
+    </table>
+}

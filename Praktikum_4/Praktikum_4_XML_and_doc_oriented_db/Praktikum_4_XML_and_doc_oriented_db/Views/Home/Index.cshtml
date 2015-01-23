@@ -1,0 +1,56 @@
+﻿@{ ViewBag.Title = "Studentenportal FH-Aachen";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table border="0" width="100%">
+    <tr>
+        <th colspan="2"><h1>Willkommen zum Studentenportal</h1></th>
+    </tr>
+    <tr>
+        <td>
+            <p>Was kann ich als n&auml;chstes tun...?</p>
+            <ul>
+                <li><a href="~/Module">Aktuelle Module</a></li>
+                <li>
+                    Benutzer
+                    <ul>
+                        <li>Professoren</li>
+                        <li>Studenten</li>
+                    </ul>
+                </li>
+                <li>Dokumente</li>
+                <li>Forum</li>
+            </ul>
+        </td>
+        <td>
+            <p><img src="~/35707-das-studium.jpg" name="http://lustich.de/bilder/autos/das-studium/" alt="http://lustich.de/bilder/autos/das-studium/" /></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form action="http://www.google.de/search" method="get" target="_blank">
+                <fieldset>
+                    <legend>Durchsuche FH Seite (&uuml;ber Google)</legend>
+                    <p>
+                        Suchbegriff:
+                        <input type="text" name="q" size="20" maxlength="40" />
+                        <input type="hidden" name="as_sitesearch" value="www.fh-aachen.de" />
+                        <input type="submit" name="submit" value="Los!" />
+                    </p>
+                </fieldset>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form action="http://www.strauch.fh-aachen.de/db/post-test.php" method="post" target="_blank">
+                <fieldset>
+                    <legend>Neue Eil-Meldung erstellen</legend>
+                    <textarea name="meldung" rows="10" cols="50"></textarea><br />
+                    <input type="submit" name="submit" value="Nachricht erstellen" />
+                </fieldset>
+            </form>
+        </td>
+    </tr>
+</table>
+<a href="http://www.fh-aachen.de/" target="_blank">zur FH Startseite</a>

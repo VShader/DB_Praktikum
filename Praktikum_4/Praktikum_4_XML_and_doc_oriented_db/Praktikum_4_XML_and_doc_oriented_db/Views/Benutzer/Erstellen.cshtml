@@ -1,0 +1,45 @@
+﻿@using Praktikum_4_XML_and_doc_oriented_db.Models
+@model Student
+@{
+    ViewBag.Title = "Erstellen";
+}
+
+<h2>Erstellen</h2>
+
+@{
+    if(ViewBag.Created != null)
+    {
+        Response.Redirect("~/Benutzer");
+    }
+    if(ViewBag.ErrorList != null)
+    { 
+        foreach(var error in ViewBag.ErrorList)
+        {
+            <h3 style="color:Red">@error</h3>
+        }
+    }
+}
+
+<form action="~/Benutzer/Erstellen" method="post">
+    <lable for="nickname">Benutzer Name
+    <input type="text" name="nickname" value="@Model.nickname"/><br />
+    <lable for="vorname">Vorname</lable>
+    <input type="text" name="vorname" value="@Model.vorname" /><br />
+    <lable for="nachname">Nachname</lable>
+    <input type="text" name="nachname" value="@Model.nachname"/><br />
+    
+    <lable for="email">E-Mail</lable>
+    <input type="text" name="email" value="@Model.email"/><br />
+
+    <lable for="matrikelnumber">Matrikelnummer</lable>
+    <input type="text" name="matrikelnumber" value="@Model.matrikelnumber" /><br />
+    <lable for="einschreibeDatum">Einschreibe Datum</lable>
+    <input type="datetime" name="einschreibeDatum" value="@Model.einschreibeDatum" /><br />
+
+    <lable for="password1">Passwort</lable>
+    <input type="password" name="password" value="@Model.password"/><br />
+    <lable for="repeatPw">Wiederholen</lable>
+    <input type="password" name="repeatPw" /><br />
+
+    <input type="submit" value="Erstellen"></input>
+</form>

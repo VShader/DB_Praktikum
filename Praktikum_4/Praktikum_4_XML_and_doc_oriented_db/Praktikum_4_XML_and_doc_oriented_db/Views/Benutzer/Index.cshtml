@@ -1,0 +1,92 @@
+﻿@using Praktikum_4_XML_and_doc_oriented_db.Models
+@model DataSet1.BenutzerrollenDataTable
+@{
+    ViewBag.Title = "Benutzer";
+}
+
+<nav>
+    <ul id="navlist">
+        <li><a href="~/Benutzer/Erstellen" target="_self">Benutzer erstellen</a></li>
+        <li><a href="~/Benutzer/Uebersicht" target="_self">Benutzer Liste</a></li>
+    </ul>
+</nav>
+
+@{
+    for (char buchstabe = 'A'; buchstabe <= 'Z'; ++buchstabe)
+    {
+        <a href="~/Benutzer?buchstabe=@buchstabe">@buchstabe</a>
+        <span> | </span>
+    }
+
+    string titel = "alle";
+    //Chart chart = null;
+    if (ViewBag.buchstabe != null) { titel = ViewBag.buchstabe; }
+
+<h2>Benutzer (@titel)</h2>
+
+    var professoren = new List<DataSet1.BenutzerrollenRow>();
+    var mitarbeiter = new List<DataSet1.BenutzerrollenRow>();
+    var studenten = new List<DataSet1.BenutzerrollenRow>();
+
+    foreach (var item in Model)
+    {
+        if (item.Rolle == "Professor") { professoren.Add(item); }
+        else if (item.Rolle == "Mitarbeiter") { mitarbeiter.Add(item); }
+        else if (item.Rolle == "Student") { studenten.Add(item); }
+    }
+}
+
+<table border=0>
+    <tr>
+        <td>
+            @if (professoren.Count > 0)
+            {
+                <table border=1 width="100%">
+                    <tr>
+                        <th>Professoren</th>
+                    </tr>
+                    @foreach (var item in professoren)
+                    {
+                        <tr>
+                            <td><a href="~/Module/ProfSummary/@item.Nickname">@item.Nickname</a></td>
+                        </tr>
+                    }
+                </table>
+            }
+
+            @if (mitarbeiter.Count > 0)
+            {
+                <table border=1 width="100%">
+                    <tr>
+                        <th>Mitarbeiter</th>
+                    </tr>
+                    @foreach (var item in mitarbeiter)
+                    {
+                        <tr>
+                            <td>@item.Nickname</td>
+                        </tr>
+                    }
+                </table>
+            }
+
+            @if (studenten.Count > 0)
+            {
+                <table border=1 width="100%">
+                    <tr>
+                        <th>Studenten</th>
+                    </tr>
+                    @foreach (var item in studenten)
+                    {
+                        <tr>
+                            <td>@item.Nickname</td>
+                        </tr>
+                    }
+                </table>
+            }
+        </td>
+        <td>
+            @if (ViewBag.buchstabe == null)
+            { <img src="~/Benutzer/RollenChart" /> }
+        </td>
+    </tr>
+</table> 

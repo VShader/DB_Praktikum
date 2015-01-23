@@ -1,0 +1,25 @@
+﻿@using Praktikum_4_XML_and_doc_oriented_db.Models
+@model Stundenplan
+@{
+    ViewBag.Title = "Stundenplan";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table>
+    <tr>
+        <th colspan="4">Stundenplan</th>
+    </tr>
+    @foreach(var tag in Model.Tage)
+    {
+        <tr><td rowspan="@(tag.Blöcke.Count+1)">@tag.Name</td></tr>
+        foreach(var block in tag.Blöcke)
+        {
+            <tr>
+                <td>@block.Zeit</td>
+                <td>@block.Veranstaltung</td>
+                <td>@block.Typ</td>
+            </tr>
+        }
+    }
+</table>

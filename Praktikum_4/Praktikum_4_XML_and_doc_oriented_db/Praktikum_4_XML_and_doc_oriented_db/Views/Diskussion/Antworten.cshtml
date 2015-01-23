@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Antworten";
+}
+
+@if (ViewBag.success) { Response.Redirect("~/Diskussion?id=" + ViewBag.diskussionID); }
+
+<form method="post" target="_self">
+    <fieldset>
+        <legend>@ViewBag.Title</legend>
+        <label for="benutzer">Benutzer</label><br />
+        <input type="text" name="benutzer" value="@Session["nickname"]" readonly="readonly" varsize="20" maxlength="40" />
+        <p>
+            <label for="mitteilung">Mitteilung</label><br />
+            <textarea name="mitteilung" rows="10" cols="50"></textarea><br />
+            <input type="submit" name="submit" value="Erstellen" />
+        </p>
+    </fieldset>
+</form>
+

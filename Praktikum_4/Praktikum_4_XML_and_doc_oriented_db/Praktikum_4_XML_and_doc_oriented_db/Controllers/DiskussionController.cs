@@ -1,11 +1,11 @@
-﻿using Praktikum_3_Disconnected_Data_and_LINQ.Models.Linq;
+﻿using Praktikum_4_XML_and_doc_oriented_db.Models.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Praktikum_3_Disconnected_Data_and_LINQ.Controllers
+namespace Praktikum_4_XML_and_doc_oriented_db.Controllers
 {
     public class DiskussionController : Controller
     {
