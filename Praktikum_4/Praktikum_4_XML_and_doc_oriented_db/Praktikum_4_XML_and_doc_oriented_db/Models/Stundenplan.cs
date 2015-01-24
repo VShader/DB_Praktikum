@@ -17,12 +17,6 @@ namespace Praktikum_4_XML_and_doc_oriented_db.Models
             Tage = new List<Tag>();
         }
 
-        public Stundenplan(object tag)
-        {
-            Aktualisiert = DateTime.Now;
-            FachSemester = 1;
-            Studiengang = "databases for novice";
-        }
 
         public static Stundenplan GetMockupDaten()
         {
@@ -58,26 +52,85 @@ namespace Praktikum_4_XML_and_doc_oriented_db.Models
             return result;
         }
         
+
         public static Stundenplan get()
         {
             var doc = XDocument.Load(@"E:\FH-Aachen\3. Semester\DB\DB_Praktikum\Praktikum_4\Praktikum_4_XML_and_doc_oriented_db\Praktikum_4_XML_and_doc_oriented_db\Models\Stundenplan.xml");
-            var days =
-                from day in doc.Descendants("stundenplan")
-                select new { tag = day.Attribute("Tag"), block = day.Descendants("Block") };
             //var days =
             //    from day in doc.Descendants("stundenplan")
-            //    select day;
+            //    select new { tag = day.Attribute("Tag"), block = day.Descendants("Block") };
+            
+            var timeTables = 
+                from timeTable in doc.Descendants("stundenplan")
+                select timeTable;
 
-            var tage = new List<Tag>();
-            foreach (var day in days)
+            var days =
+                from day in timeTables.Descendants("Tag")
+                select day;
+
+            var tagList = new List<Tag>();
+            foreach(var day in days)
             {
-                tage.Add(new Tag { Name = day.tag.ToString(), Blöcke = (List<Block>)day.block });
+                var blocks =
+                    from block in day.Descendants("Block")
+                    select block;
+
+                var blockList = new List<Block>();
+                foreach(var block in blocks)
+                {
+                    string zeit = "";
+                    int fachNr = 0;
+                    string typ = "";
+                    if (block.Attribute("Zeit") != null)
+                    {
+                        zeit = block.Attribute("Zeit").Value;
+                    }
+                    if(block.Attribute("FachNr") != null)
+                    {
+                        fachNr = Convert.ToInt32(block.Attribute("FachNr").Value);
+                    }
+                    if (block.Attribute("Typ") != null)
+                    {
+                        typ = block.Attribute("Typ").Value;
+                    }
+                    blockList.Add(new Block
+                    {
+                        Zeit = zeit,
+                        Veranstaltung = block.Value,
+                        Typ = typ,
+                        FachNr = fachNr
+                    });
+                }
+                tagList.Add(new Tag
+                {
+                    Name = day.Attribute("Name").Value,
+                    Blöcke = blockList
+                });
             }
 
+            //var tage = new List<Tag>();
+            //foreach (var day in days)
+            //{
+            //    tage.Add(new Tag { Name = day.tag.ToString(), Blöcke = (List<Block>)day.block });
+            //}
 
-            return new Stundenplan(days);
+            DateTime aktualisiert;
+            try
+            {
+                aktualisiert = DateTime.Parse(timeTables.FirstOrDefault().Value);
+            }
+            catch (Exception) { aktualisiert = DateTime.Now; }
+
+            return new Stundenplan 
+                { 
+                    Aktualisiert = aktualisiert,
+                    FachSemester = Convert.ToInt32(timeTables.FirstOrDefault().Attribute("FachSemester").Value),
+                    Studiengang = timeTables.FirstOrDefault().Attribute("Studiengang").Value,
+                    Tage = tagList
+                };
         }
     }
+
 
     public class Tag
     {

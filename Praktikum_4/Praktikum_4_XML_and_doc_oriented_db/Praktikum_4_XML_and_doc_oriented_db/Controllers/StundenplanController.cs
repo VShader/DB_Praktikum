@@ -12,7 +12,8 @@ namespace Praktikum_4_XML_and_doc_oriented_db.Controllers
         // GET: Stundenplan
         public ActionResult Index()
         {
-            var stundenplan = Stundenplan.GetMockupDaten();
+            //var stundenplan = Stundenplan.GetMockupDaten();
+            var stundenplan = Stundenplan.get();
             return View(stundenplan);
         }
     }
