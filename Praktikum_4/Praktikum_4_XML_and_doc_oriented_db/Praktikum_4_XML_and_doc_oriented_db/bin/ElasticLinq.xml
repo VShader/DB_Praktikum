@@ -1,0 +1,727 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ElasticLinq</name>
+    </assembly>
+    <members>
+        <member name="T:ElasticLinq.ElasticConnection">
+            <summary>
+            Specifies connection parameters for ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.ElasticContext">
+            <summary>
+            Provides an entry point to easily create LINQ queries for ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.IElasticContext">
+            <summary>
+            Represents a unit of work in ElasticLINQ.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.IElasticContext.Query``1">
+            <summary>
+            Gets a query that can search for documents of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The document type.</typeparam>
+            <returns>The query that can search for documents of the given type.</returns>
+        </member>
+        <member name="M:ElasticLinq.ElasticContext.#ctor(ElasticLinq.ElasticConnection,ElasticLinq.Mapping.IElasticMapping,ElasticLinq.Logging.ILog,ElasticLinq.Retry.IRetryPolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ElasticLinq.ElasticContext"/> class.
+            </summary>
+            <param name="connection">The information on how to connect to the ElasticSearch server.</param>
+            <param name="mapping">The object that helps map queries (optional, defaults to <see cref="T:ElasticLinq.Mapping.TrivialElasticMapping"/>).</param>
+            <param name="log">The object which logs information (optional, defaults to <see cref="T:ElasticLinq.Logging.NullLog"/>).</param>
+            <param name="retryPolicy">The object which controls retry policy for the search (optional, defaults to <see cref="P:ElasticLinq.ElasticContext.RetryPolicy"/>).</param>
+        </member>
+        <member name="M:ElasticLinq.ElasticContext.Query``1">
+            <inheritdoc/>
+        </member>
+        <member name="T:ElasticLinq.ElasticFields">
+            <summary>
+            Provides properties that stand-in for special fields in ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.ElasticMethods">
+            <summary>
+            Provides methods that stand-in for special operations in ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.ElasticQuery`1">
+            <summary>
+            ElasticSearch query object used to facilitate LINQ query syntax.
+            </summary>
+            <typeparam name="T">Element type being queried.</typeparam>
+        </member>
+        <member name="M:ElasticLinq.ElasticQuery`1.ToElasticSearchQuery">
+            <summary>
+            Shows the query that would be issued to ElasticSearch
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.ElasticQueryExtensions">
+            <summary>
+            Extension methods that extend LINQ functionality for ElasticSearch queries.
+            </summary>
+            <remarks>
+            Using these methods against any provider except <see cref="T:ElasticLinq.ElasticQueryProvider"/> will fail.
+            </remarks>
+        </member>
+        <member name="M:ElasticLinq.ElasticQueryExtensions.Query``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Queries an ElasticSearch index based on a predicate.
+            </summary>
+            <returns>
+            An <see cref="T:System.Linq.IQueryable`1"/> that contains elements from the input sequence that satisfy the condition specified by <paramref name="predicate"/>.
+            </returns>
+            <param name="source">An <see cref="T:System.Linq.IQueryable`1"/> to query.</param>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> or <paramref name="predicate"/> is null.</exception>
+        </member>
+        <member name="M:ElasticLinq.ElasticQueryExtensions.QueryString``1(System.Linq.IQueryable{``0},System.String)">
+            <summary>
+            Queries an ElasticSearch index based on a query string.
+            </summary>
+            <returns>
+            An <see cref="T:System.Linq.IQueryable`1"/> that contains elements from the input sequence that satisfy the condition specified by <paramref name="query"/>.
+            </returns>
+            <param name="source">An <see cref="T:System.Linq.IQueryable`1"/> to query.</param>
+            <param name="query">A query string to test each element for.</param>
+            <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> or <paramref name="query"/> is null.</exception>
+        </member>
+        <member name="M:ElasticLinq.ElasticQueryExtensions.OrderByScore``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Sorts the elements of a sequence in ascending order by their ElasticSearch score.
+            </summary>
+            <returns>
+            An <see cref="T:System.Linq.IOrderedQueryable`1"/> whose elements are sorted according to score.
+            </returns>
+            <param name="source">A sequence of values to order.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> is null.</exception>
+        </member>
+        <member name="M:ElasticLinq.ElasticQueryExtensions.OrderByScoreDescending``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Sorts the elements of a sequence in descending order by their ElasticSearch score.
+            </summary>
+            <returns>
+            An <see cref="T:System.Linq.IOrderedQueryable`1"/> whose elements are sorted according to score.
+            </returns>
+            <param name="source">A sequence of values to order.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> is null.</exception>
+        </member>
+        <member name="M:ElasticLinq.ElasticQueryExtensions.ThenByScore``1(System.Linq.IOrderedQueryable{``0})">
+            <summary>
+            Performs a subsequent ordering of the elements in a sequence in ascending order by their ElasticSearch score.
+            </summary>
+            <returns>
+            An <see cref="T:System.Linq.IOrderedQueryable`1"/> whose elements are sorted according to score.
+            </returns>
+            <param name="source">A sequence of values to order.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> is null.</exception>
+        </member>
+        <member name="M:ElasticLinq.ElasticQueryExtensions.ThenByScoreDescending``1(System.Linq.IOrderedQueryable{``0})">
+            <summary>
+            Performs a subsequent ordering of the elements in a sequence in descending order by their ElasticSearch score.
+            </summary>
+            <returns>
+            An <see cref="T:System.Linq.IOrderedQueryable`1"/> whose elements are sorted according to score.
+            </returns>
+            <param name="source">A sequence of values to order.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> is null.</exception>
+        </member>
+        <member name="M:ElasticLinq.ElasticQueryExtensions.ToElasticSearchQuery``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Converts an <see cref="T:ElasticLinq.IElasticQuery`1"/> into the JSON that would be submitted
+            to ElasticSearch.
+            </summary>
+            <param name="source">An <see cref="T:System.Linq.IQueryable{T}"/> to query.</param>
+            <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+            <returns>The ElasticSearch JSON representing this query.</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="source"/> is not of type <see cref="T:ElasticLinq.IElasticQuery`1"/>.</exception>
+        </member>
+        <member name="T:ElasticLinq.ElasticQueryProvider">
+            <summary>
+            Query provider implementation for ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Logging.ILog">
+            <summary>
+            An interface which is used for logging various events in ElasticLINQ.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Logging.ILog.Log(System.Diagnostics.TraceEventType,System.Exception,System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Object[])">
+            <summary>
+            Logs a message to the logging system.
+            </summary>
+            <param name="type">The event type of the message.</param>
+            <param name="ex">The exception (optional).</param>
+            <param name="additionalInfo">Additional information to be logged (optional).</param>
+            <param name="messageFormat">The message (will be formatted, if <paramref name="args"/> is not null/empty; otherwise,
+            should be sent directly to the logging system).</param>
+            <param name="args">The arguments for <paramref name="messageFormat"/> (optional).</param>
+        </member>
+        <member name="T:ElasticLinq.Logging.NullLog">
+            <summary>
+            An implementation of <see cref="T:ElasticLinq.Logging.ILog"/> which does no logging.
+            </summary>
+        </member>
+        <member name="F:ElasticLinq.Logging.NullLog.Instance">
+            <summary>
+            Gets the singleton <see cref="T:ElasticLinq.Logging.NullLog"/> instance.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Logging.NullLog.Log(System.Diagnostics.TraceEventType,System.Exception,System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:ElasticLinq.Mapping.CouchbaseElasticMapping">
+            <summary>
+            Mapping appropriate for use with the Couchbase/ElasticSearch adapter.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Mapping.ElasticMapping">
+            <summary>
+            A base class for mapping ElasticSearch values that can lower-case all field values
+            (and respects <see cref="T:ElasticLinq.NotAnalyzedAttribute"/> to opt-out of the lower-casing), 
+            camel-case field names, and camel-case and pluralize type names.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Mapping.IElasticMapping">
+            <summary>
+            Interface to describe how types and properties are mapped into ElasticSearch.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Mapping.IElasticMapping.FormatValue(System.Reflection.MemberInfo,System.Object)">
+            <summary>
+            Used to format values used in ElasticSearch criteria. Extending this allows you to
+            specify rules like lower-casing values for certain types of criteria so that searched
+            values match the rules ElasticSearch is using to store/search values.
+            </summary>
+            <param name="member">The member that this value is searching.</param>
+            <param name="value">The value to be formatted.</param>
+            <returns>Returns the formatted value.</returns>
+        </member>
+        <member name="M:ElasticLinq.Mapping.IElasticMapping.GetDocumentMappingPrefix(System.Type)">
+            <summary>
+            Gets the fully document prefix for a given CLR type. Extending this allows you to change
+            the mapping of types names into the prefix used when creating ElasticSearch queries against
+            fields. For example, using the Couchbase/ElasticSearch adapter yield documents with the
+            prefix "doc", since it wraps all documents into a "doc" object; similarly, developers may
+            with to "namespace" ElasticSearch documents when using ElasticSearch's auto-schema system,
+            to prevent type collisions between field with the same name but different document type.
+            </summary>
+            <param name="type">The type whose prefix is required.</param>
+            <returns>Returns the document prefix; may return <c>null</c> or empty string to
+            indicate that no document prefix is required to search the documents.</returns>
+        </member>
+        <member name="M:ElasticLinq.Mapping.IElasticMapping.GetDocumentType(System.Type)">
+            <summary>
+            Gets the document type name for the given CLR type. Extending this allows you to change the
+            mapping of types names in the CLR to document type names in ElasticSearch. For example,
+            using the Couchbase/ElasticSearch adapter yields documents with the document type
+            "couchbaseDocument", regardless of the CLR type.
+            </summary>
+            <param name="type">The type whose name is required.</param>
+            <returns>Returns the ElasticSearch document type name that matches the type; may
+            return <c>null</c> or empty string to not limit searches to a document type.</returns>
+        </member>
+        <member name="M:ElasticLinq.Mapping.IElasticMapping.GetFieldName(System.String,System.Reflection.MemberInfo)">
+            <summary>
+            Gets the field name for the given member. Extending this allows you to change the
+            mapping field names in the CLR to field names in ElasticSearch. Typically, these rules
+            will need to match the serialization rules you use when storing your documents.
+            </summary>
+            <param name="prefix">The prefix to put in front of this field name, if the field is
+            an ongoing part of the document search.</param>
+            <param name="memberInfo">The member whose name is required.</param>
+            <returns>Returns the ElasticSearch field name that matches the member.</returns>
+        </member>
+        <member name="M:ElasticLinq.Mapping.IElasticMapping.GetTypeExistsCriteria(System.Type)">
+            <summary>
+            Gets criteria that can be used to find documents of a particular type. Will be used by
+            ElasticLINQ when a query does not have any Where clauses, so that it can unambiguously
+            find documents of the given type. Typically this should degenerate into an "exists"
+            test for a field that's known to always have a value.
+            </summary>
+            <param name="docType">The type that's being searched.</param>
+            <returns>The criteria for finding the document.</returns>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticMapping.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Globalization.CultureInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ElasticLinq.Mapping.ElasticMapping"/> class.
+            </summary>
+            <param name="camelCaseFieldNames">Pass <c>true</c> to automatically camel-case field names (for <see cref="M:ElasticLinq.Mapping.ElasticMapping.GetFieldName(System.String,System.Reflection.MemberInfo)"/>).</param>
+            <param name="camelCaseTypeNames">Pass <c>true</c> to automatically camel-case type names (for <see cref="M:ElasticLinq.Mapping.ElasticMapping.GetDocumentType(System.Type)"/>).</param>
+            <param name="pluralizeTypeNames">Pass <c>true</c> to automatically pluralize type names (for <see cref="M:ElasticLinq.Mapping.ElasticMapping.GetDocumentType(System.Type)"/>).</param>
+            <param name="lowerCaseAnalyzedFieldValues">Pass <c>true</c> to automatically convert field values to lower case (for <see cref="M:ElasticLinq.Mapping.ElasticMapping.FormatValue(System.Reflection.MemberInfo,System.Object)"/>).</param>
+            <param name="conversionCulture">The culture to use for the lower-casing, camel-casing, and pluralization operations. If <c>null</c>,
+            uses <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.</param>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticMapping.FormatValue(System.Reflection.MemberInfo,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticMapping.GetFieldName(System.String,System.Reflection.MemberInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticMapping.GetDocumentMappingPrefix(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticMapping.GetDocumentType(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticMapping.GetTypeExistsCriteria(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticMapping.IsNotAnalyzed(System.Reflection.MemberInfo)">
+            <summary>
+            Determine whether a field is "not analyzed". By default, looks for the member to be
+            decorated with the <see cref="T:ElasticLinq.NotAnalyzedAttribute"/>.
+            </summary>
+            <param name="member">The member to evaluate.</param>
+            <returns>Returns <c>true</c> if the field is not analyzed; <c>false</c>, otherwise.</returns>
+        </member>
+        <member name="M:ElasticLinq.Mapping.CouchbaseElasticMapping.#ctor(System.Boolean,System.Boolean,System.Globalization.CultureInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ElasticLinq.Mapping.CouchbaseElasticMapping"/> class.
+            </summary>
+            <param name="camelCaseFieldNames">Pass <c>true</c> to automatically camel-case field names (for <see cref="M:ElasticLinq.Mapping.ElasticMapping.GetFieldName(System.String,System.Reflection.MemberInfo)"/>).</param>
+            <param name="lowerCaseAnalyzedFieldValues">Pass <c>true</c> to automatically convert field values to lower case (for <see cref="M:ElasticLinq.Mapping.ElasticMapping.FormatValue(System.Reflection.MemberInfo,System.Object)"/>).</param>
+            <param name="conversionCulture">The culture to use for the lower-casing, camel-casing, and pluralization operations. If <c>null</c>,
+            uses <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.</param>
+        </member>
+        <member name="M:ElasticLinq.Mapping.CouchbaseElasticMapping.GetDocumentMappingPrefix(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.CouchbaseElasticMapping.GetDocumentType(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ElasticLinq.Mapping.ElasticFieldsMappingWrapper">
+            <summary>
+            Wraps an elastic mapping with one that also handles the built-in
+            ElasticFields class that contains properties for _score etc.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticFieldsMappingWrapper.#ctor(ElasticLinq.Mapping.IElasticMapping)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticFieldsMappingWrapper.FormatValue(System.Reflection.MemberInfo,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticFieldsMappingWrapper.GetDocumentMappingPrefix(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticFieldsMappingWrapper.GetDocumentType(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticFieldsMappingWrapper.GetFieldName(System.String,System.Reflection.MemberInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ElasticLinq.Mapping.ElasticFieldsMappingWrapper.GetTypeExistsCriteria(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ElasticLinq.Mapping.MappingHelpers">
+            <summary>
+            Common techniques for re-mapping names used between the various mappings.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.NotAnalyzedAttribute">
+            <summary>
+            Used to mark serialized fields as being not-analayzed in ElasticSearch (and therefore
+            not subject to value transformations like lower-casing).
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.AndCriteria">
+            <summary>
+            Contains criteria all of which must be satisfied
+            for a document to be selected.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.CompoundCriteria">
+            <summary>
+            Base class for any criteria wanting to have criteria of its
+            own such as AndCriteria and OrCriteria.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.ICriteria">
+            <summary>
+            Interface that all Criteria must implement to be part of
+            the query filter tree for ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.ExistsCriteria">
+            <summary>
+            Criteria that selects documents if they have any value
+            in the specified field.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.SingleFieldCriteria">
+            <summary>
+            Base class for any criteria that maps to a single field.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.INegatableCriteria">
+            <summary>
+            Interface a Criteria may optionally support if it
+            knows of a way to negate it's effects without being
+            wrapped in a NotCriteria.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.ITermsCriteria">
+            <summary>
+            Interface implemented by <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> and <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/> so that they can be
+            treated homogeneously.
+            </summary>
+        </member>
+        <member name="P:ElasticLinq.Request.Criteria.ITermsCriteria.Field">
+            <summary>
+            Gets the field to be searched.
+            </summary>
+        </member>
+        <member name="P:ElasticLinq.Request.Criteria.ITermsCriteria.IsOrCriteria">
+            <summary>
+            Gets a value that indicates whether this criteria is an "or" style criteria.
+            </summary>
+        </member>
+        <member name="P:ElasticLinq.Request.Criteria.ITermsCriteria.Member">
+            <summary>
+            Gets the member that this criteria is searching.
+            </summary>
+        </member>
+        <member name="P:ElasticLinq.Request.Criteria.ITermsCriteria.Values">
+            <summary>
+            Gets the list of values to be searched for.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.MissingCriteria">
+            <summary>
+            Criteria to select documents if they do not have a value
+            in the specified field.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.NotCriteria">
+            <summary>
+            Criteria that inverts the logic of criteria it contains.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.OrCriteria">
+            <summary>
+            Criteria that requires one of the criteria to be
+            satisfied in order to select the document.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.RangeCriteria">
+            <summary>
+            Criteria that specifies a range of desired values for a given
+            field that need to be satisfied to select a document.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.QueryStringCriteria">
+            <summary>
+            Criteria that specifies a query string to be passed to ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Criteria.TermCriteria">
+            <summary>
+            Criteria that specifies one or more possible values that a
+            field must match in order to select a document.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Expressions.FacetExpression">
+            <summary>
+            An expression tree node that represents an ElasticSearch facet.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Facets.FilterFacet">
+            <summary>
+            Represents a filter facet in ElasticSearch.
+            Filter facets return the number of documents that
+            match the specified filter criteria.
+            </summary>
+            <remarks>
+            Mapped to .GroupBy(a => 1).Select(a => a.Sum(b => b.Field))
+            </remarks>
+        </member>
+        <member name="T:ElasticLinq.Request.Facets.StatisticalFacet">
+            <summary>
+            Represents a stastical facet in ElasticSearch.
+            Statistical facets return all statistical information such
+            as counts, sums, mean etc. for a given number of fields
+            within the documents specified by the filter criteria.
+            </summary>
+            <remarks>
+            Mapped to .GroupBy(a => 1).Select(a => a.Count(b => b.SomeField))
+            </remarks>
+        </member>
+        <member name="T:ElasticLinq.Request.Facets.TermsFacet">
+            <summary>
+            Represents a terms facet in ElasticSearch.
+            Terms facets return count information for terms.
+            </summary>
+            <remarks>
+            Mapped to .GroupBy(a => a.Something).Select(a => a.Count())
+            </remarks>
+        </member>
+        <member name="T:ElasticLinq.Request.Facets.TermsStatsFacet">
+            <summary>
+            Represents a terms_stats facet in ElasticSearch.
+            Terms_stats facets return all statistical information for
+            a given field broken down by a term. 
+            </summary>
+            <remarks>
+            Mapped to .GroupBy(a => a.Term).Select(a => a.Sum(b => b.Field))
+            </remarks>
+        </member>
+        <member name="T:ElasticLinq.Request.Formatters.PostBodyRequestFormatter">
+            <summary>
+            Formats an ElasticSearchRequest into a JSON POST body to be sent
+            to ElasticSearch for querying.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.FacetExpressionVisitor">
+            <summary>
+            Gathers and rebinds aggregate operations into ElasticSearch facets.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.CriteriaExpressionVisitor">
+            <summary>
+            Expression visitor to translate predicate expressions to criteria expressions.
+            Used by Where, Query, Single, First, Count etc.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Response.Materializers.ElasticFacetsMaterializer">
+            <summary>
+            Materializes multiple facet requests from the ElasticResponse.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Response.Materializers.ElasticFacetsMaterializer.FlattenTermsStatsToAggregateRows(System.Collections.Generic.IEnumerable{Newtonsoft.Json.Linq.JToken})">
+            <summary>
+            terms_stats and terms facet responses have each field in an independent object with all 
+            possible operations for that field. Multiple fields means multiple objects
+            each of which might not have all possible terms. Convert that structure into
+            a SQL-style row with one term per row containing each aggregate field and operation combination.
+            </summary>
+            <param name="termsStats">Facets of type terms or terms_stats.</param>
+            <returns>An enumeration of AggregateRows containing appropriate keys and fields.</returns>
+        </member>
+        <member name="P:ElasticLinq.Response.Materializers.ElasticFacetsMaterializer.ElementType">
+            <summary>
+            Type of element being materialized.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Request.Criteria.TermsCriteria.Build(System.String,System.Reflection.MemberInfo,System.Object[])">
+            <summary>
+            Builds a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> or <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/>, depending on how many values are
+            present in the <paramref name="values"/> collection.
+            </summary>
+            <param name="field">The field that's being searched.</param>
+            <param name="member">The member information for the field.</param>
+            <param name="values">The values to be matched.</param>
+            <returns>Either a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> object or a <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/> object.</returns>
+        </member>
+        <member name="M:ElasticLinq.Request.Criteria.TermsCriteria.Build(System.String,System.Reflection.MemberInfo,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Builds a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> or <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/>, depending on how many values are
+            present in the <paramref name="values"/> collection.
+            </summary>
+            <param name="field">The field that's being searched.</param>
+            <param name="member">The member information for the field.</param>
+            <param name="values">The values to be matched.</param>
+            <returns>Either a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> object or a <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/> object.</returns>
+        </member>
+        <member name="M:ElasticLinq.Request.Criteria.TermsCriteria.Build(System.Nullable{ElasticLinq.Request.Criteria.TermsExecutionMode},System.String,System.Reflection.MemberInfo,System.Object[])">
+            <summary>
+            Builds a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> or <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/>, depending on how many values are
+            present in the <paramref name="values"/> collection.
+            </summary>
+            <param name="executionMode">The terms execution mode (optional). Only used when a <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/> is returned.</param>
+            <param name="field">The field that's being searched.</param>
+            <param name="member">The member information for the field.</param>
+            <param name="values">The values to be matched.</param>
+            <returns>Either a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> object or a <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/> object.</returns>
+        </member>
+        <member name="M:ElasticLinq.Request.Criteria.TermsCriteria.Build(System.Nullable{ElasticLinq.Request.Criteria.TermsExecutionMode},System.String,System.Reflection.MemberInfo,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Builds a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> or <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/>, depending on how many values are
+            present in the <paramref name="values"/> collection.
+            </summary>
+            <param name="executionMode">The terms execution mode (optional). Only used when a <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/> is returned.</param>
+            <param name="field">The field that's being searched.</param>
+            <param name="member">The member information for the field.</param>
+            <param name="values">The values to be matched.</param>
+            <returns>Either a <see cref="T:ElasticLinq.Request.Criteria.TermCriteria"/> object or a <see cref="T:ElasticLinq.Request.Criteria.TermsCriteria"/> object.</returns>
+        </member>
+        <member name="T:ElasticLinq.Response.Materializers.ElasticOneHitMaterializer">
+            <summary>
+            Materializes one ElasticSearch hit throwing necessary exceptions as required to ensure First/Single semantics.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Response.Materializers.ElasticManyHitsMaterializer">
+            <summary>
+            Materializes multiple ElasticSearch hits into the required
+            C# list of objects.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.SortOption">
+            <summary>
+            Specifies the options desired for sorting by an individual field.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.BranchSelectExpressionVisitor">
+            <summary>
+            Tests expressions to find interesting branches of the tree.
+            Can be used for things like finding candidates for partial evaluation.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.ElasticFieldsExpressionVisitor">
+            <summary>
+            Expression visitor that substitutes references to <see cref="T:ElasticLinq.ElasticFields"/>
+            with the desired underlying special reserved name.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.ElasticQueryTranslator">
+            <summary>
+            Expression visitor to translate a LINQ query into a <see cref="T:ElasticLinq.Request.Visitors.ElasticTranslateResult"/>
+            that captures remote and local semantics.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Request.Visitors.ElasticQueryTranslator.RebindElasticFieldsAndChainProjector(System.Linq.Expressions.Expression,System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            We are using the whole entity in a new select projection. Re-bind any ElasticField references to JObject
+            and ensure the entity parameter is a freshly materialized entity object from our default materializer.
+            </summary>
+            <param name="selectExpression">Select expression to re-bind.</param>
+            <param name="entityParameter">Parameter that references the whole entity.</param>
+        </member>
+        <member name="M:ElasticLinq.Request.Visitors.ElasticQueryTranslator.RebindPropertiesAndElasticFields(System.Linq.Expressions.Expression)">
+            <summary>
+            We are using just some properties of the entity. Rewrite the properties as JObject field lookups and
+            record all the field names used to ensure we only select those.
+            </summary>
+            <param name="selectExpression">Select expression to re-bind.</param>
+        </member>
+        <member name="T:ElasticLinq.Request.Expressions.CriteriaExpression">
+            <summary>
+            An expression tree node that represents ElasticSearch criteria.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.ElasticTranslateResult">
+            <summary>
+            Represents the result of a translated query including the
+            remote <see cref="T:ElasticLinq.Request.ElasticSearchRequest"/> to select the data
+            and the local <see cref="T:ElasticLinq.Response.Materializers.IElasticMaterializer"/> necessary to
+            instantiate objects.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.EvaluatingExpressionVisitor">
+            <summary>
+            Visits the expression tree and for any node in its list
+            replaces that expression with a constant expression
+            that resulted from its compilation and invocation.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.PartialEvaluator">
+            <summary>
+            Determines which part of the tree can be locally
+            evaluated before execution and substitutes those parts
+            with constant values obtained from local execution of that part.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Retry.Delay">
+            <summary>
+            Implements an asynchronous delay. Replaceable for testing purposes (so unit tests don't actually wait).
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Retry.RetryPolicy">
+            <summary>
+            An implementation of <see cref="T:ElasticLinq.Retry.IRetryPolicy"/> which implements an exponential back-off strategy.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Retry.IRetryPolicy.ExecuteAsync``1(System.Func{System.Threading.Tasks.Task{``0}},System.Func{``0,System.Exception,System.Boolean},System.Action{``0,System.Collections.Generic.Dictionary{System.String,System.Object}})">
+            <summary>
+            Attempts an asynchronous operation one or more times.
+            </summary>
+            <typeparam name="TResult">The result type from the operation.</typeparam>
+            <param name="operationFunc">The lambda which performs the operation once.</param>
+            <param name="shouldRetryFunc">The lambda which inspects a result and/or exception and decides whether it should retry the result.</param>
+            <param name="appendLogInfoFunc">The lambda which can supplement info logging for failed searches.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ElasticLinq.Retry.RetryPolicy.#ctor(ElasticLinq.Logging.ILog,System.Int32,System.Int32,ElasticLinq.Retry.Delay)">
+            <summary>
+            Retries an operation if the operation is retryable.
+            </summary>
+            <param name="log">Used for logging debug and warning information.</param>
+            <param name="initialRetryMilliseconds">The initial wait time for a retry. Subsequent retries grow exponentially. Defaults to 100ms.</param>
+            <param name="maxAttempts">The maximum number of attempts to perform. Defaults to 10 attempts.</param>
+            <param name="delay">The object which implements an async delay. Replaceable for testing purposes.</param>
+        </member>
+        <member name="M:ElasticLinq.Retry.RetryPolicy.ExecuteAsync``1(System.Func{System.Threading.Tasks.Task{``0}},System.Func{``0,System.Exception,System.Boolean},System.Action{``0,System.Collections.Generic.Dictionary{System.String,System.Object}})">
+            <inheritdoc/>
+        </member>
+        <member name="T:ElasticLinq.Utility.Argument">
+            <summary>
+            Argument validation static helpers to reduce noise in other methods.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Utility.ForcedAuthHandler">
+            <summary>
+            Forces basic authorization values, since negotiation requires an extra round-trip, which significantly
+            increases the time required to search the index.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Utility.TypeHelper">
+            <summary>
+            Various methods to make reflection and type handling a little
+            easier.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Mapping.TrivialElasticMapping">
+            <summary>
+            Trivial mapping implementation that will pluralize type names, camel-case
+            type names and field names, and lowercase field values.
+            </summary>
+        </member>
+        <member name="M:ElasticLinq.Mapping.TrivialElasticMapping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ElasticLinq.Mapping.TrivialElasticMapping"/> class.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.ElasticRequestProcessor">
+            <summary>
+            Sends ElasticSearch requests via HTTP and ensures the response is materialized.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.ElasticSearchRequest">
+            <summary>
+            Represents a search request to be sent to ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Response.Model.ElasticResponse">
+            <summary>
+            Top-level response from ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Response.Model.Hit">
+            <summary>
+            Individual hit response from ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Response.Model.Hits">
+            <summary>
+            Container of hit responses from ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Response.Model.ShardStatistics">
+            <summary>
+            Shard statistics response from ElasticSearch.
+            </summary>
+        </member>
+        <member name="T:ElasticLinq.Request.Visitors.MemberProjectionExpressionVisitor">
+            <summary>
+            Rebinds select projection entity member accesses to JObject fields
+            recording the specific field names required for selection.
+            </summary>
+        </member>
+    </members>
+</doc>
