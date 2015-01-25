@@ -98,14 +98,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Site.css" />
-    <Content Include="ElasticLinq.dll" />
-    <Content Include="ElasticSearchLibrary.dll" />
     <Content Include="Global.asax" />
     <Content Include="Models\Stundenplan.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Newtonsoft.Json.dll" />
-    <Content Include="RestSharp.dll" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

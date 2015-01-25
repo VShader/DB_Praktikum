@@ -8,7 +8,7 @@
 
 <table>
     <tr>
-        <th colspan="4">Stundenplan</th>
+        <th colspan="5">Stundenplan</th>
     </tr>
     @foreach(var tag in Model.Tage)
     {
@@ -17,8 +17,9 @@
         {
             <tr>
                 <td>@block.Zeit</td>
-                <td>@block.Veranstaltung</td>
+                <td><a href="~/Foren?id=@block.ForumID">@block.Veranstaltung</a></td>
                 <td>@block.Typ</td>
+                <td><a href="~/Module/ProfSummary/@block.Verantwortlicher">@block.Verantwortlicher</a></td>
             </tr>
         }
     }
